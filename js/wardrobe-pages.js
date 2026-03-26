@@ -745,6 +745,98 @@
     render();
   }
 
+  function initRepairPick() {
+    maybeSeed();
+    var state = WS.loadState();
+    var root = document.getElementById('repair-pick-root');
+    var btnSubmit = document.getElementById('btn-repair-pick-continue');
+    if (!root) return;
+
+    function render() {
+      root.innerHTML = '';
+      var garments = state.garments.slice();
+      if (garments.length === 0) {
+        var empty = document.createElement('p');
+        empty.appendChild(
+          document.createTextNode('Aucun vêtement dans la garde-robe. ')
+        );
+        var a = document.createElement('a');
+        a.href = 'garde-robe-ajouter-photo.html';
+        a.textContent = 'Ajouter un vêtement';
+        empty.appendChild(a);
+        empty.appendChild(document.createTextNode(' ou '));
+        var a2 = document.createElement('a');
+        a2.href = 'garde-robe.html';
+        a2.textContent = 'voir la garde-robe';
+        empty.appendChild(a2);
+        empty.appendChild(document.createTextNode('.'));
+        root.appendChild(empty);
+        if (btnSubmit) btnSubmit.disabled = true;
+        return;
+      }
+      if (btnSubmit) btnSubmit.disabled = false;
+      var group = document.createElement('div');
+      group.setAttribute('role', 'radiogroup');
+      group.setAttribute('aria-labelledby', 'repair-pick-legend');
+      garments.forEach(function (g, idx) {
+        var p = document.createElement('p');
+        p.style.margin = '0.35rem 0 0';
+        if (idx === 0) p.style.marginTop = '0';
+        var label = document.createElement('label');
+        label.style.display = 'flex';
+        label.style.gap = '0.65rem';
+        label.style.alignItems = 'center';
+        label.style.flexWrap = 'wrap';
+        var radio = document.createElement('input');
+        radio.type = 'radio';
+        radio.name = 'garment';
+        radio.value = g.id;
+        if (idx === 0) {
+          radio.required = true;
+          radio.checked = true;
+        }
+        label.appendChild(radio);
+        label.appendChild(createGarmentThumb(g, 44));
+        var span = document.createElement('span');
+        span.textContent =
+          ' Article #' +
+          (idx + 1) +
+          ' — ' +
+          (g.name || 'Sans nom') +
+          ' — ' +
+          catLabel(g.category);
+        label.appendChild(span);
+        p.appendChild(label);
+        group.appendChild(p);
+      });
+      root.appendChild(group);
+    }
+
+    render();
+  }
+
+  function initRepairPhotoPage() {
+    var id = getParam('garment');
+    var nameEl = document.getElementById('repair-garment-name');
+    var hiddenEl = document.getElementById('repair-garment-id');
+    var block = document.getElementById('repair-garment-block');
+    if (!nameEl || !hiddenEl) return;
+
+    if (!id) {
+      window.location.replace('reparer-depuis-garde-robe.html');
+      return;
+    }
+    var state = WS.loadState();
+    var g = WS.getGarment(state, id);
+    if (!g) {
+      window.location.replace('reparer-depuis-garde-robe.html');
+      return;
+    }
+    nameEl.textContent = g.name || 'Sans nom';
+    hiddenEl.value = id;
+    if (block) block.removeAttribute('hidden');
+  }
+
   function initOutfitLook() {
     maybeSeed();
     var state = WS.loadState();
@@ -1180,6 +1272,12 @@
         break;
       case 'donation-pick':
         initDonationPick();
+        break;
+      case 'repair-pick':
+        initRepairPick();
+        break;
+      case 'repair-photo':
+        initRepairPhotoPage();
         break;
       default:
         break;
