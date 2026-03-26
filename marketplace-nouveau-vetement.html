@@ -21,9 +21,15 @@
         <input id="titre" name="titre" type="text" placeholder="ex. Pantalon taille haute">
       </p>
       <p>
-        <label for="photo">Photo(s)</label>
-        <input id="photo" name="photo" type="file" accept="image/*" multiple>
+        <span id="mp-photo-label">Photo(s)</span>
       </p>
+      <input id="mp-photo-camera" name="photo" type="file" accept="image/*" capture="environment" multiple hidden>
+      <input id="mp-photo-gallery" name="photo_gallery" type="file" accept="image/*" multiple hidden>
+      <div class="rt-photo-actions" role="group" aria-labelledby="mp-photo-label">
+        <button type="button" class="rt-photo-btn" id="btn-mp-photo-camera">📷 Prendre une photo</button>
+        <button type="button" class="rt-photo-btn" id="btn-mp-photo-gallery">Galerie</button>
+      </div>
+      <p class="rt-photo-hint">Sur téléphone : <strong>Prendre une photo</strong> ouvre l’appareil (plusieurs clichés si ton appareil le propose). <strong>Galerie</strong> permet de choisir une ou plusieurs images.</p>
       <p>
         <label for="prix">Prix (€)</label>
         <input id="prix" name="prix" type="number" min="0" step="0.01" placeholder="ex. 28">
@@ -67,6 +73,13 @@
       slider.addEventListener('input', sync);
       prixEl.addEventListener('input', sync);
       sync();
+
+      var cam = document.getElementById('mp-photo-camera');
+      var gal = document.getElementById('mp-photo-gallery');
+      var b1 = document.getElementById('btn-mp-photo-camera');
+      var b2 = document.getElementById('btn-mp-photo-gallery');
+      if (b1 && cam) b1.addEventListener('click', function () { cam.click(); });
+      if (b2 && gal) b2.addEventListener('click', function () { gal.click(); });
     })();
   </script>
   <nav class="rt-tabbar" aria-label="Raccourcis">
