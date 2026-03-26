@@ -1,5 +1,5 @@
 /**
- * Relais Textile — état garde-robe (mémoire + localStorage)
+ * Reviva — état garde-robe (mémoire + localStorage)
  * Clé : rt_wardrobe_v1
  */
 (function (global) {

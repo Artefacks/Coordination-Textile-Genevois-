@@ -1,5 +1,5 @@
 /**
- * Relais Textile — « Prendre une photo » : active la caméra (getUserMedia) ou
+ * Reviva — « Prendre une photo » : active la caméra (getUserMedia) ou
  * repli sur &lt;input type="file" capture&gt; si indisponible.
  */
 (function () {

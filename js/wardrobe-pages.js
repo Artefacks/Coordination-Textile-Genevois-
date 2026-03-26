@@ -1,5 +1,5 @@
 /**
- * Relais Textile — initialisation par page (data-page sur <body>)
+ * Reviva — initialisation par page (data-page sur <body>)
  */
 (function () {
   var WS = window.WardrobeStore;
@@ -933,7 +933,7 @@
     if (titleEl) titleEl.textContent = 'Partager : « ' + (outfit.name || 'Sans titre') + ' »';
     if (subEl) subEl.textContent = 'Outfit enregistré.';
     var fakeUrl =
-      'https://relais-textile.app/outfit/' + encodeURIComponent(outfit.id);
+      'https://reviva.app/outfit/' + encodeURIComponent(outfit.id);
     if (urlInput) urlInput.value = fakeUrl;
 
     var lookNav = document.getElementById('outfit-partage-link-look');
