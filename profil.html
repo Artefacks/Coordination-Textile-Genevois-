@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="stylesheet" href="css/relais.css">
+  <title>Relais Textile — Profil</title>
+</head>
+<body class="rt-has-tabbar">
+  <p class="brand-row"><a href="index.html" class="brand" aria-label="Relais Textile accueil"><span class="brand-emoji" aria-hidden="true">🧵</span> <span class="brand-name">Relais Textile</span></a></p>
+  <header>
+    <nav>
+      <p><a href="dashboard.html">Retour hub</a> — <a href="carte.html">Carte</a></p>
+    </nav>
+    <h1>Profil</h1>
+  </header>
+  <main>
+    <section aria-labelledby="points-compteur">
+      <h2 id="points-compteur">Points</h2>
+      <p><strong>1 240</strong> pts <span aria-hidden="true">🌿</span></p>
+      <p>Compteur simple (pas de graphique).</p>
+    </section>
+    <section aria-labelledby="progression">
+      <h2 id="progression">Progression &amp; récompenses</h2>
+      <p>Prochain palier : <strong>bon d’achat magasin partenaire</strong> (ex. 10 € chez un partenaire).</p>
+      <p>
+        <label for="barre-points">Avancement vers le prochain bon d’achat</label><br>
+        <progress id="barre-points" value="740" max="1500">740 / 1500</progress>
+        <span>740 / 1500 pts — palier suivant : bon d’achat 15 €</span>
+      </p>
+      <p>Récompense déjà débloquée : <strong>bon d’achat 10 €</strong> — Magasin Partenaire (ex. « Mode Verte »).</p>
+    </section>
+    <section aria-labelledby="historique">
+      <h2 id="historique">Historique des points</h2>
+      <ul>
+        <li>+50 pts — donation validée — 12/03/2026</li>
+        <li>+20 pts — inscription complète — 01/03/2026</li>
+      </ul>
+    </section>
+    <section aria-labelledby="compte">
+      <h2 id="compte">Gestion du compte</h2>
+      <form action="#" method="get">
+        <fieldset>
+          <legend>Photo de profil</legend>
+          <p>
+            <label for="avatar">Image</label>
+            <input id="avatar" name="avatar" type="file" accept="image/*">
+          </p>
+        </fieldset>
+        <fieldset>
+          <legend>Adresse</legend>
+          <p>
+            <label for="ligne1">Ligne 1</label>
+            <input id="ligne1" name="ligne1" type="text" autocomplete="address-line1">
+          </p>
+          <p>
+            <label for="cp">Code postal</label>
+            <input id="cp" name="cp" type="text" autocomplete="postal-code">
+          </p>
+          <p>
+            <label for="ville">Ville</label>
+            <input id="ville" name="ville" type="text" autocomplete="address-level2">
+          </p>
+        </fieldset>
+        <fieldset>
+          <legend>Mot de passe</legend>
+          <p>
+            <label for="mdp-actuel">Mot de passe actuel</label>
+            <input id="mdp-actuel" name="mdp-actuel" type="password" autocomplete="current-password">
+          </p>
+          <p>
+            <label for="mdp-nouveau">Nouveau mot de passe</label>
+            <input id="mdp-nouveau" name="mdp-nouveau" type="password" autocomplete="new-password">
+          </p>
+        </fieldset>
+        <p><button type="submit" formaction="profil.html">Enregistrer</button></p>
+      </form>
+    </section>
+  </main>
+  <nav class="rt-tabbar" aria-label="Raccourcis">
+    <a href="garde-robe.html" class="rt-tabbar__item"><span class="rt-tabbar__icon" aria-hidden="true">👔</span><span class="rt-tabbar__label">Garde-robe</span></a>
+    <a href="reparer.html" class="rt-tabbar__item"><span class="rt-tabbar__icon" aria-hidden="true">🧵</span><span class="rt-tabbar__label">Réparer</span></a>
+    <a href="donner.html" class="rt-tabbar__item"><span class="rt-tabbar__icon" aria-hidden="true">🎁</span><span class="rt-tabbar__label">Donner</span></a>
+    <a href="marketplace.html" class="rt-tabbar__item"><span class="rt-tabbar__icon" aria-hidden="true">🏪</span><span class="rt-tabbar__label">Marketplace</span></a>
+    <a href="profil.html" class="rt-tabbar__item"><span class="rt-tabbar__icon" aria-hidden="true">👤</span><span class="rt-tabbar__label">Profil</span></a>
+  </nav>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="stylesheet" href="css/relais.css">
+  <title>Relais Textile — Garde-robe</title>
+</head>
+<body class="rt-has-tabbar" data-page="inventory">
+  <p class="brand-row"><a href="index.html" class="brand" aria-label="Relais Textile accueil"><span class="brand-emoji" aria-hidden="true">🧵</span> <span class="brand-name">Relais Textile</span></a></p>
+  <header>
+    <nav>
+      <p><a href="dashboard.html">Retour hub</a> — <a href="carte.html">Carte</a></p>
+    </nav>
+    <h1>Garde-robe — gestion</h1>
+  </header>
+  <main>
+    <section aria-labelledby="filtres">
+      <h2 id="filtres">Filtres par catégorie</h2>
+      <form id="garment-filter-form" action="#" method="get">
+        <p>
+          <label for="categorie">Catégorie</label>
+          <select id="categorie" name="categorie">
+            <option value="">Toutes</option>
+            <option value="haut">Hauts</option>
+            <option value="bas">Bas</option>
+            <option value="chaussures">Chaussures</option>
+            <option value="accessoires">Accessoires</option>
+          </select>
+          <button type="button" id="btn-appliquer-filtre">Appliquer</button>
+        </p>
+      </form>
+    </section>
+    <section aria-labelledby="inv">
+      <h2 id="inv">Inventaire</h2>
+      <ul id="garment-list"></ul>
+    </section>
+    <section aria-labelledby="outfits">
+      <h2 id="outfits">Outfits</h2>
+      <nav>
+        <ul>
+          <li><a href="garde-robe-outfits.html">Mes outfits enregistrés</a></li>
+          <li><a href="garde-robe-outfit.html">Créer un outfit</a></li>
+        </ul>
+      </nav>
+    </section>
+    <section aria-labelledby="actions">
+      <h2 id="actions">Actions</h2>
+      <nav>
+        <ul>
+          <li><a href="garde-robe-ajouter.html">Ajouter un vêtement</a></li>
+          <li><a href="marketplace.html">Marketplace</a></li>
+          <li><a href="donner.html">Donner</a></li>
+        </ul>
+      </nav>
+    </section>
+  </main>
+  <script defer src="js/wardrobe-store.js"></script>
+  <script defer src="js/wardrobe-pages.js"></script>
+  <nav class="rt-tabbar" aria-label="Raccourcis">
+    <a href="garde-robe.html" class="rt-tabbar__item"><span class="rt-tabbar__icon" aria-hidden="true">👔</span><span class="rt-tabbar__label">Garde-robe</span></a>
+    <a href="reparer.html" class="rt-tabbar__item"><span class="rt-tabbar__icon" aria-hidden="true">🧵</span><span class="rt-tabbar__label">Réparer</span></a>
+    <a href="donner.html" class="rt-tabbar__item"><span class="rt-tabbar__icon" aria-hidden="true">🎁</span><span class="rt-tabbar__label">Donner</span></a>
+    <a href="marketplace.html" class="rt-tabbar__item"><span class="rt-tabbar__icon" aria-hidden="true">🏪</span><span class="rt-tabbar__label">Marketplace</span></a>
+    <a href="profil.html" class="rt-tabbar__item"><span class="rt-tabbar__icon" aria-hidden="true">👤</span><span class="rt-tabbar__label">Profil</span></a>
+  </nav>
+</body>
+</html>

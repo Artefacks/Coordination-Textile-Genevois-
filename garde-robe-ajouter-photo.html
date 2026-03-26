@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="stylesheet" href="css/relais.css">
+  <title>Relais Textile — Ajouter (photo + IA)</title>
+</head>
+<body class="rt-has-tabbar" data-page="add-photo">
+  <p class="brand-row"><a href="index.html" class="brand" aria-label="Relais Textile accueil"><span class="brand-emoji" aria-hidden="true">🧵</span> <span class="brand-name">Relais Textile</span></a></p>
+  <header>
+    <nav>
+      <p><a href="garde-robe-ajouter.html">Retour choix d’ajout</a> — <a href="garde-robe.html">Garde-robe</a> — <a href="carte.html">Carte</a></p>
+    </nav>
+    <h1>Ajouter — photo &amp; découpage IA</h1>
+  </header>
+  <main>
+    <form id="garment-form" action="#" method="get">
+      <section aria-labelledby="identite">
+        <h2 id="identite">Article</h2>
+        <p>
+          <label for="nom-vetement">Nom du vêtement</label>
+          <input id="nom-vetement" name="nom-vetement" type="text">
+        </p>
+        <p>
+          <label for="categorie-vetement">Catégorie</label>
+          <select id="categorie-vetement" name="categorie-vetement">
+            <option value="haut">Haut</option>
+            <option value="bas">Bas</option>
+            <option value="chaussures">Chaussures</option>
+            <option value="accessoires">Accessoires</option>
+          </select>
+        </p>
+      </section>
+
+      <section aria-labelledby="etape-photo">
+        <h2 id="etape-photo">1. Prendre ou importer une photo</h2>
+        <p>
+          <label for="photo">Photo du vêtement</label>
+          <input id="photo" name="photo" type="file" accept="image/*" capture="environment">
+        </p>
+        <p>
+          <img id="photo-preview" alt="Aperçu du vêtement" width="200" hidden>
+        </p>
+      </section>
+
+      <section aria-labelledby="etape-api">
+        <h2 id="etape-api">2. API IA — découpage du vêtement</h2>
+        <p>L’image est envoyée à une <strong>API d’IA</strong> qui <strong>isole / détoure</strong> le vêtement (fond retiré, silhouette nette).</p>
+        <p>Aperçu découpé — fond neutre.</p>
+        <p>
+          <button type="button">Relancer le découpage</button>
+        </p>
+      </section>
+
+      <section aria-labelledby="etape-qualite">
+        <h2 id="etape-qualite">3. Questions sur la qualité de l’habit</h2>
+        <fieldset>
+          <legend>État général</legend>
+          <p><label><input type="radio" name="etat" value="neuf"> Neuf / comme neuf</label></p>
+          <p><label><input type="radio" name="etat" value="bon"> Bon état</label></p>
+          <p><label><input type="radio" name="etat" value="use"> Usé</label></p>
+          <p><label><input type="radio" name="etat" value="tres_use"> Très usé</label></p>
+        </fieldset>
+        <fieldset>
+          <legend>Taches ou défauts visibles</legend>
+          <p><label><input type="radio" name="taches" value="non"> Non</label></p>
+          <p><label><input type="radio" name="taches" value="legeres"> Légères</label></p>
+          <p><label><input type="radio" name="taches" value="importantes"> Importantes</label></p>
+        </fieldset>
+        <p>
+          <label for="commentaire-qualite">Détail (couture, odeur, déformation…)</label><br>
+          <textarea id="commentaire-qualite" name="commentaire-qualite" rows="3"></textarea>
+        </p>
+      </section>
+
+      <section aria-labelledby="etape-don">
+        <h2 id="etape-don">4. Donnable ou pas ?</h2>
+        <fieldset>
+          <legend>Selon toi, cet habit est-il donnable en l’état ?</legend>
+          <p><label><input type="radio" name="donnable" value="oui"> Oui, donnable</label></p>
+          <p><label><input type="radio" name="donnable" value="non"> Non, pas donnable</label></p>
+          <p><label><input type="radio" name="donnable" value="ns"> Je ne sais pas</label></p>
+        </fieldset>
+      </section>
+
+      <p>
+        <button type="submit">Enregistrer</button>
+      </p>
+    </form>
+  </main>
+  <script defer src="js/wardrobe-store.js"></script>
+  <script defer src="js/wardrobe-pages.js"></script>
+  <nav class="rt-tabbar" aria-label="Raccourcis">
+    <a href="garde-robe.html" class="rt-tabbar__item"><span class="rt-tabbar__icon" aria-hidden="true">👔</span><span class="rt-tabbar__label">Garde-robe</span></a>
+    <a href="reparer.html" class="rt-tabbar__item"><span class="rt-tabbar__icon" aria-hidden="true">🧵</span><span class="rt-tabbar__label">Réparer</span></a>
+    <a href="donner.html" class="rt-tabbar__item"><span class="rt-tabbar__icon" aria-hidden="true">🎁</span><span class="rt-tabbar__label">Donner</span></a>
+    <a href="marketplace.html" class="rt-tabbar__item"><span class="rt-tabbar__icon" aria-hidden="true">🏪</span><span class="rt-tabbar__label">Marketplace</span></a>
+    <a href="profil.html" class="rt-tabbar__item"><span class="rt-tabbar__icon" aria-hidden="true">👤</span><span class="rt-tabbar__label">Profil</span></a>
+  </nav>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="stylesheet" href="css/relais.css">
+  <title>Relais Textile — Marketplace (garde-robe)</title>
+</head>
+<body class="rt-has-tabbar">
+  <p class="brand-row"><a href="index.html" class="brand" aria-label="Relais Textile accueil"><span class="brand-emoji" aria-hidden="true">🧵</span> <span class="brand-name">Relais Textile</span></a></p>
+  <header>
+    <nav>
+      <p><a href="marketplace-publier.html">Retour publier</a> — <a href="marketplace.html">Marketplace</a> — <a href="carte.html">Carte</a></p>
+    </nav>
+    <h1>Depuis la garde-robe</h1>
+  </header>
+  <main>
+    <form action="#" method="get">
+      <fieldset>
+        <legend>Article</legend>
+        <p><label><input type="radio" name="article" value="1"> Article #1 — Robe</label></p>
+        <p><label><input type="radio" name="article" value="2"> Article #2 — Chaussures</label></p>
+      </fieldset>
+      <section aria-labelledby="annonce">
+        <h2 id="annonce">Prix et part CTG</h2>
+        <p>
+          <label for="prix">Prix affiché (€)</label>
+          <input id="prix" name="prix" type="number" min="0" step="0.01" placeholder="ex. 35">
+        </p>
+        <div class="ctg-donation">
+          <p><strong>CTG</strong> — part du prix (min. <strong>15&nbsp;%</strong>).</p>
+          <p>
+            <label for="ctg-pct"><span id="ctg-pct-value">15</span>&nbsp;% pour la CTG</label>
+            <input type="range" id="ctg-pct" name="ctg-pct" min="15" max="100" value="15" class="ctg-range">
+          </p>
+          <ul class="ctg-recap">
+            <li>Versement CTG : <strong id="ctg-eur">0,00</strong>&nbsp;€</li>
+            <li>Part vendeur (hors cette part) : <strong id="vendeur-eur">0,00</strong>&nbsp;€</li>
+          </ul>
+        </div>
+        <p>
+          <label for="desc">Description</label>
+          <textarea id="desc" name="desc" rows="4" placeholder="État, taille, marque…"></textarea>
+        </p>
+      </section>
+      <p>
+        <button type="submit" formaction="marketplace-annonce-publiee.html">Publier sur la marketplace</button>
+        <a href="marketplace-nouveau-vetement.html">Plutôt ajouter un vêtement hors garde-robe</a>
+      </p>
+    </form>
+  </main>
+  <script>
+    (function () {
+      var prixEl = document.getElementById('prix');
+      var slider = document.getElementById('ctg-pct');
+      function sync() {
+        var prix = parseFloat(prixEl.value);
+        if (isNaN(prix) || prix < 0) prix = 0;
+        var pct = parseInt(slider.value, 10);
+        document.getElementById('ctg-pct-value').textContent = String(pct);
+        var ctg = (prix * pct / 100).toFixed(2).replace(/\./g, ',');
+        var vend = (prix * (100 - pct) / 100).toFixed(2).replace(/\./g, ',');
+        document.getElementById('ctg-eur').textContent = ctg;
+        document.getElementById('vendeur-eur').textContent = vend;
+      }
+      slider.addEventListener('input', sync);
+      prixEl.addEventListener('input', sync);
+      sync();
+    })();
+  </script>
+  <nav class="rt-tabbar" aria-label="Raccourcis">
+    <a href="garde-robe.html" class="rt-tabbar__item"><span class="rt-tabbar__icon" aria-hidden="true">👔</span><span class="rt-tabbar__label">Garde-robe</span></a>
+    <a href="reparer.html" class="rt-tabbar__item"><span class="rt-tabbar__icon" aria-hidden="true">🧵</span><span class="rt-tabbar__label">Réparer</span></a>
+    <a href="donner.html" class="rt-tabbar__item"><span class="rt-tabbar__icon" aria-hidden="true">🎁</span><span class="rt-tabbar__label">Donner</span></a>
+    <a href="marketplace.html" class="rt-tabbar__item"><span class="rt-tabbar__icon" aria-hidden="true">🏪</span><span class="rt-tabbar__label">Marketplace</span></a>
+    <a href="profil.html" class="rt-tabbar__item"><span class="rt-tabbar__icon" aria-hidden="true">👤</span><span class="rt-tabbar__label">Profil</span></a>
+  </nav>
+</body>
+</html>

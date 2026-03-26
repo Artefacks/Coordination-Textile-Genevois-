@@ -1,0 +1,693 @@
+/* Relais Textile — UX app (minimum viable) */
+:root {
+  --rt-bg: #fafaf9;
+  --rt-surface: #ffffff;
+  --rt-elevated: #f5f5f4;
+  --rt-border: #e7e5e4;
+  --rt-text: #1c1917;
+  --rt-muted: #78716c;
+  --rt-primary: #0d9488;
+  --rt-primary-dark: #0f766e;
+  --rt-primary-soft: #ccfbf1;
+  --rt-radius: 14px;
+  --rt-radius-sm: 10px;
+  --rt-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  --rt-shadow-md: 0 4px 14px rgba(0, 0, 0, 0.08);
+  --rt-touch: 48px;
+  /* Référence cadre « téléphone » (desktop / aperçu) — iPhone standard × hauteur type SE */
+  --rt-phone-width: 390px;
+  --rt-phone-min-height: 667px;
+}
+
+html {
+  box-sizing: border-box;
+  min-height: 100%;
+  background: radial-gradient(120% 80% at 50% 20%, #44403c 0%, #1c1917 55%, #0c0a09 100%);
+  padding: clamp(0.75rem, 3vw, 1.5rem) clamp(0.5rem, 2vw, 1rem) 2rem;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: var(--rt-phone-width);
+  min-width: var(--rt-phone-width);
+  margin: 0 auto;
+  padding: 0 1rem 1.25rem;
+  background: var(--rt-bg);
+  border-radius: 2.35rem;
+  border: 3px solid #262626;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.06),
+    0 28px 70px rgba(0, 0, 0, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  min-height: max(min(88vh, 860px), var(--rt-phone-min-height));
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--rt-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+body::before {
+  content: "";
+  display: block;
+  height: 26px;
+  margin: 12px auto 16px;
+  width: min(110px, 32%);
+  background: #171717;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.brand-row {
+  margin: 0 0 0.85rem 0;
+  flex-shrink: 0;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.brand-emoji {
+  flex-shrink: 0;
+  font-size: 2rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 12px;
+  background: var(--rt-primary-soft);
+  box-shadow: var(--rt-shadow);
+}
+
+.brand-name {
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: -0.02em;
+  color: var(--rt-primary-dark);
+}
+
+/* En-tête écran */
+header {
+  flex-shrink: 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--rt-border);
+  margin-bottom: 0.75rem;
+}
+
+header nav p {
+  margin: 0.35rem 0 0;
+  font-size: 0.8125rem;
+}
+
+header nav a {
+  color: var(--rt-primary-dark);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+header nav a:hover {
+  text-decoration: underline;
+}
+
+h1 {
+  font-size: 1.375rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin: 0.25rem 0 0;
+  line-height: 1.2;
+}
+
+header > p {
+  margin: 0.5rem 0 0;
+  font-size: 0.9rem;
+  color: var(--rt-muted);
+  line-height: 1.45;
+}
+
+h2 {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--rt-muted);
+  margin: 1.25rem 0 0.5rem;
+}
+
+main > h2:first-child {
+  margin-top: 0;
+}
+
+h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+  color: var(--rt-text);
+}
+
+main {
+  flex: 1;
+  min-height: 0;
+}
+
+/* Sections type « carte » */
+main > section,
+main section[aria-labelledby] {
+  background: var(--rt-surface);
+  border: 1px solid var(--rt-border);
+  border-radius: var(--rt-radius);
+  padding: 1rem 1rem 0.5rem;
+  margin-bottom: 0.75rem;
+  box-shadow: var(--rt-shadow);
+}
+
+main > section:last-child {
+  margin-bottom: 0;
+}
+
+section > h2:first-child,
+section[aria-labelledby] > h2:first-of-type {
+  margin-top: 0;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+section article {
+  padding-bottom: 0.75rem;
+}
+
+section article:last-child {
+  padding-bottom: 0.25rem;
+}
+
+/* Listes liens (carte, hub) */
+main > ul {
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
+  background: var(--rt-surface);
+  border: 1px solid var(--rt-border);
+  border-radius: var(--rt-radius);
+  overflow: hidden;
+  box-shadow: var(--rt-shadow);
+}
+
+main > ul li {
+  border-bottom: 1px solid var(--rt-border);
+  padding: 0;
+  font-size: 0.9rem;
+}
+
+main > ul li:last-child {
+  border-bottom: none;
+}
+
+main > ul li a {
+  display: inline-block;
+  padding: 0.85rem 1rem;
+  min-height: var(--rt-touch);
+  color: var(--rt-primary-dark);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+main > ul li a:hover {
+  background: var(--rt-elevated);
+}
+
+/* Nav secondaire dans main (liste d’actions) */
+main nav ul {
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+main nav ul li a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--rt-touch);
+  padding: 0 1rem;
+  background: var(--rt-surface);
+  border: 1px solid var(--rt-border);
+  border-radius: var(--rt-radius-sm);
+  color: var(--rt-primary-dark);
+  text-decoration: none;
+  font-weight: 600;
+  box-shadow: var(--rt-shadow);
+}
+
+main nav ul li a:hover {
+  background: var(--rt-primary-soft);
+  border-color: var(--rt-primary);
+}
+
+/* Listes imbriquées (nav dans section) */
+section nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+section nav ul li {
+  margin-bottom: 0.35rem;
+}
+
+section nav ul li a {
+  color: var(--rt-primary-dark);
+  font-weight: 500;
+}
+
+/* Formulaires */
+form p {
+  margin: 0 0 0.85rem;
+}
+
+label {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--rt-muted);
+  margin-bottom: 0.35rem;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+input[type="number"],
+input[type="date"],
+input[type="url"],
+input[type="file"],
+textarea,
+select {
+  width: 100%;
+  max-width: 100%;
+  min-height: 44px;
+  padding: 0.5rem 0.75rem;
+  font: inherit;
+  color: var(--rt-text);
+  background: var(--rt-surface);
+  border: 1px solid var(--rt-border);
+  border-radius: var(--rt-radius-sm);
+}
+
+textarea {
+  min-height: 88px;
+  resize: vertical;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--rt-primary);
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.2);
+}
+
+fieldset {
+  border: none;
+  margin: 0 0 1rem;
+  padding: 0;
+}
+
+main form fieldset {
+  background: var(--rt-surface);
+  border: 1px solid var(--rt-border);
+  border-radius: var(--rt-radius);
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  box-shadow: var(--rt-shadow);
+}
+
+fieldset legend {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--rt-text);
+  padding: 0;
+  margin-bottom: 0.5rem;
+}
+
+main fieldset p {
+  margin: 0.35rem 0;
+}
+
+fieldset label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-weight: 400;
+  color: var(--rt-text);
+  cursor: pointer;
+  line-height: 1.4;
+}
+
+fieldset label input {
+  margin-top: 0.2rem;
+  flex-shrink: 0;
+}
+
+main ol {
+  margin: 0 0 1rem;
+  padding-left: 1.15rem;
+}
+
+main ol li {
+  margin-bottom: 0.35rem;
+  padding-left: 0.15rem;
+}
+
+/* Boutons */
+button,
+input[type="submit"],
+input[type="button"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--rt-touch);
+  padding: 0 1.15rem;
+  font: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  color: #fff;
+  background: linear-gradient(180deg, var(--rt-primary) 0%, var(--rt-primary-dark) 100%);
+  border: none;
+  border-radius: var(--rt-radius-sm);
+  box-shadow: var(--rt-shadow);
+  cursor: pointer;
+  width: 100%;
+  max-width: 100%;
+}
+
+button:hover,
+input[type="submit"]:hover {
+  filter: brightness(1.05);
+}
+
+button:active,
+input[type="submit"]:active {
+  transform: scale(0.98);
+}
+
+progress {
+  width: 100%;
+  height: 10px;
+  border-radius: 999px;
+  accent-color: var(--rt-primary);
+}
+
+/* Pied d’écran / barre d’actions type tab */
+footer {
+  margin-top: auto;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--rt-border);
+  flex-shrink: 0;
+}
+
+footer nav h2 {
+  margin-top: 0;
+}
+
+footer nav ul {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.35rem;
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0;
+}
+
+footer nav ul li {
+  margin: 0;
+  text-align: center;
+}
+
+footer nav ul li a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem;
+  padding: 0.35rem 0.2rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--rt-primary-dark);
+  text-decoration: none;
+  background: var(--rt-elevated);
+  border-radius: var(--rt-radius-sm);
+  border: 1px solid transparent;
+}
+
+footer nav ul li a:hover {
+  background: var(--rt-primary-soft);
+  border-color: var(--rt-primary);
+}
+
+footer p {
+  margin: 0.5rem 0 0;
+}
+
+small {
+  font-size: 0.75rem;
+  color: var(--rt-muted);
+  line-height: 1.4;
+}
+
+p {
+  margin: 0 0 0.75rem;
+}
+
+main > p:first-of-type {
+  margin-top: 0;
+}
+
+/* Liens dans le corps de texte */
+main p a:not([class]),
+section p a:not([class]) {
+  color: var(--rt-primary-dark);
+  font-weight: 500;
+}
+
+/* Marketplace */
+.muted-intro {
+  margin-top: -0.25rem;
+}
+
+.marketplace-feed {
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.marketplace-card {
+  margin: 0;
+  padding: 0;
+  background: var(--rt-surface);
+  border: 1px solid var(--rt-border);
+  border-radius: var(--rt-radius-sm);
+  box-shadow: var(--rt-shadow);
+  overflow: hidden;
+}
+
+.marketplace-card a {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+  padding: 0.85rem 1rem;
+  min-height: var(--rt-touch);
+  text-decoration: none;
+  color: var(--rt-primary-dark);
+  font-weight: 600;
+}
+
+.marketplace-card a:hover {
+  background: var(--rt-elevated);
+}
+
+.marketplace-card-title {
+  font-size: 0.95rem;
+}
+
+.marketplace-card-meta {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--rt-muted);
+}
+
+/* Chat (marketplace) */
+.chat-thread {
+  margin-bottom: 1rem;
+}
+
+.chat-bubble {
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--rt-radius-sm);
+  margin: 0 0 0.5rem;
+  max-width: 95%;
+  font-size: 0.9rem;
+}
+
+.chat-bubble-them {
+  background: var(--rt-elevated);
+  border: 1px solid var(--rt-border);
+}
+
+.chat-bubble-me {
+  margin-left: auto;
+  background: var(--rt-primary-soft);
+  border: 1px solid var(--rt-primary);
+}
+
+/* Paiement — part CTG */
+.ctg-donation {
+  background: var(--rt-surface);
+  border: 1px solid var(--rt-border);
+  border-radius: var(--rt-radius);
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  box-shadow: var(--rt-shadow);
+}
+
+.ctg-range {
+  width: 100%;
+  max-width: 100%;
+  min-height: 2.5rem;
+  margin-top: 0.35rem;
+  accent-color: var(--rt-primary);
+}
+
+.ctg-recap {
+  list-style: none;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  font-size: 0.9rem;
+}
+
+.ctg-recap li {
+  padding: 0.35rem 0;
+  border-bottom: 1px solid var(--rt-border);
+}
+
+.ctg-recap li:last-child {
+  border-bottom: none;
+}
+
+/* Barre d’onglets bas (type app) */
+.rt-tabbar {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  display: flex;
+  justify-content: space-around;
+  align-items: stretch;
+  width: min(100%, var(--rt-phone-width));
+  max-width: var(--rt-phone-width);
+  margin: 0;
+  padding: 0.4rem 0.2rem calc(0.45rem + env(safe-area-inset-bottom, 0px));
+  background: var(--rt-surface);
+  border-top: 1px solid var(--rt-border);
+  box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.07);
+}
+
+.rt-tabbar__item {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.1rem;
+  min-height: var(--rt-touch);
+  padding: 0.2rem 0.15rem;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-align: center;
+  text-decoration: none;
+  color: var(--rt-muted);
+  border-radius: var(--rt-radius-sm);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.rt-tabbar__item:hover,
+.rt-tabbar__item:focus-visible {
+  color: var(--rt-primary-dark);
+  background: var(--rt-elevated);
+  outline: none;
+}
+
+.rt-tabbar__icon {
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+.rt-tabbar__label {
+  display: block;
+  line-height: 1.15;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+body.rt-has-tabbar main {
+  padding-bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px));
+}
+
+/* Téléphone réel */
+@media (max-width: 420px) {
+  html {
+    min-width: 0;
+    padding: 0;
+    background: var(--rt-bg);
+  }
+
+  body {
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding-bottom: env(safe-area-inset-bottom, 1rem);
+  }
+
+  body.rt-has-tabbar {
+    padding-bottom: 0;
+  }
+
+  .rt-tabbar {
+    width: 100%;
+    max-width: none;
+    left: 0;
+    right: 0;
+    transform: none;
+  }
+
+  body::before {
+    display: none;
+  }
+}

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <link rel="stylesheet" href="css/relais.css">
+  <title>Relais Textile — Réparer — photo</title>
+</head>
+<body class="rt-has-tabbar">
+  <p class="brand-row"><a href="index.html" class="brand" aria-label="Relais Textile accueil"><span class="brand-emoji" aria-hidden="true">🧵</span> <span class="brand-name">Relais Textile</span></a></p>
+  <header>
+    <nav>
+      <p><a href="reparer.html">Menu Réparer</a> — <a href="reparer-depuis-garde-robe.html">Retour sélection garde-robe</a> — <a href="carte.html">Carte</a></p>
+    </nav>
+    <h1>Réparer — diagnostic IA</h1>
+    <p><strong>Étape 1</strong> (parcours garde-robe) : photographie la <strong>zone problématique</strong> du vêtement (rapproche-toi pour que l’IA analyse le détail).</p>
+  </header>
+  <main>
+    <form action="#" method="get">
+      <p>
+        <label for="article">Vêtement concerné</label>
+        <select id="article" name="article">
+          <option value="1">Article #1</option>
+          <option value="2">Article #2</option>
+        </select>
+      </p>
+      <p>
+        <label for="photo-zone">Photo de la zone à réparer</label>
+        <input id="photo-zone" name="photo-zone" type="file" accept="image/*" capture="environment">
+      </p>
+      <p>
+        <button type="submit" formaction="reparer-analyse-ia.html">Continuer — envoi à l’IA</button>
+        <a href="reparer-nouveau-vetement.html">Plutôt un nouveau vêtement</a>
+      </p>
+    </form>
+  </main>
+  <nav class="rt-tabbar" aria-label="Raccourcis">
+    <a href="garde-robe.html" class="rt-tabbar__item"><span class="rt-tabbar__icon" aria-hidden="true">👔</span><span class="rt-tabbar__label">Garde-robe</span></a>
+    <a href="reparer.html" class="rt-tabbar__item"><span class="rt-tabbar__icon" aria-hidden="true">🧵</span><span class="rt-tabbar__label">Réparer</span></a>
+    <a href="donner.html" class="rt-tabbar__item"><span class="rt-tabbar__icon" aria-hidden="true">🎁</span><span class="rt-tabbar__label">Donner</span></a>
+    <a href="marketplace.html" class="rt-tabbar__item"><span class="rt-tabbar__icon" aria-hidden="true">🏪</span><span class="rt-tabbar__label">Marketplace</span></a>
+    <a href="profil.html" class="rt-tabbar__item"><span class="rt-tabbar__icon" aria-hidden="true">👤</span><span class="rt-tabbar__label">Profil</span></a>
+  </nav>
+</body>
+</html>
