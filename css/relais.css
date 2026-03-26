@@ -692,6 +692,25 @@ body.rt-has-tabbar main {
   line-height: 1.4;
 }
 
+/* Aperçu « découpage » (prototype — fond type studio) */
+.rt-cutout-frame {
+  display: inline-block;
+  max-width: 100%;
+  margin-top: 0.35rem;
+  padding: 0.65rem;
+  background: repeating-conic-gradient(#f5f5f4 0% 25%, #e7e5e4 0% 50%) 50% / 18px 18px;
+  border-radius: var(--rt-radius-sm);
+  border: 1px solid var(--rt-border);
+  box-shadow: var(--rt-shadow);
+}
+
+.rt-cutout-frame img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+}
+
 /* Téléphone réel */
 @media (max-width: 420px) {
   html {

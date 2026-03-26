@@ -269,10 +269,12 @@
 
     var cutoutPreview = document.getElementById('photo-cutout-preview');
     var cutoutSection = document.getElementById('photo-cutout-section');
+    var cutoutPlaceholder = document.getElementById('photo-cutout-placeholder');
     var btnRelaunchCutout = document.getElementById('btn-relaunch-cutout');
 
     function applyCutoutPreview(dataUrl) {
       if (!dataUrl) return;
+      if (cutoutPlaceholder) cutoutPlaceholder.hidden = true;
       if (cutoutPreview) {
         cutoutPreview.src = dataUrl;
         cutoutPreview.hidden = false;
