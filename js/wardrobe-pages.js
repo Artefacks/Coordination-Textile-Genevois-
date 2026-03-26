@@ -964,6 +964,184 @@
     }
   }
 
+  var STORAGE_DON_NOM = 'rt_don_nouveau_nom';
+  var STORAGE_DON_PHOTO = 'rt_don_nouveau_photo';
+  var STORAGE_DON_ORIGINAL = 'rt_don_nouveau_photo_original';
+
+  /** Donner — nouveau vêtement : aperçu, découpage (RTCutout), sessionStorage pour la suite */
+  function initDonnerNouveauPhoto() {
+    var form = document.getElementById('donner-nouveau-form');
+    if (!form) return;
+
+    var photoCamera = document.getElementById('don-photo-camera');
+    var photoGallery = document.getElementById('don-photo-gallery');
+    var preview = document.getElementById('don-photo-preview');
+    var cutoutPreview = document.getElementById('don-cutout-preview');
+    var cutoutSection = document.getElementById('don-cutout-section');
+    var cutoutPlaceholder = document.getElementById('don-cutout-placeholder');
+    var cutoutStatus = document.getElementById('don-cutout-status');
+    var btnRelaunchCutout = document.getElementById('don-btn-relaunch-cutout');
+    var submitBtn = document.getElementById('don-btn-continuer-questions');
+    var nomInput = document.getElementById('nom');
+    var RTCutout = window.RTCutout;
+
+    var newPhotoFromFile = null;
+    var newPhotoOriginal = null;
+    var userPickedPhoto = false;
+
+    function applyCutoutPreview(dataUrl) {
+      if (!dataUrl) return;
+      if (cutoutPlaceholder) cutoutPlaceholder.hidden = true;
+      if (cutoutPreview) {
+        cutoutPreview.src = dataUrl;
+        cutoutPreview.hidden = false;
+      }
+      if (cutoutSection) cutoutSection.hidden = false;
+    }
+
+    function setCutoutBusy(busy, message) {
+      if (cutoutStatus) {
+        if (busy && message) {
+          cutoutStatus.hidden = false;
+          cutoutStatus.textContent = message;
+        } else {
+          cutoutStatus.textContent = '';
+          cutoutStatus.hidden = true;
+        }
+      }
+      if (submitBtn) submitBtn.disabled = !!busy;
+      if (btnRelaunchCutout) btnRelaunchCutout.disabled = !!busy;
+    }
+
+    function runCutoutFromDataUrl(dataUrl) {
+      if (!dataUrl || typeof dataUrl !== 'string') return;
+      if (!RTCutout || typeof RTCutout.apply !== 'function') {
+        applyCutoutPreview(dataUrl);
+        newPhotoFromFile = dataUrl;
+        return;
+      }
+      setCutoutBusy(true, 'Découpage en cours…');
+      window.setTimeout(function () {
+        RTCutout.apply(dataUrl, function (err, pngDataUrl) {
+          setCutoutBusy(false);
+          if (!err && pngDataUrl) {
+            applyCutoutPreview(pngDataUrl);
+            newPhotoFromFile = pngDataUrl;
+          } else {
+            if (err) console.warn('wardrobe-pages: découpage don', err);
+            applyCutoutPreview(dataUrl);
+            newPhotoFromFile = dataUrl;
+          }
+        });
+      }, 0);
+    }
+
+    function loadFileToPreview(file) {
+      if (!file || !preview) return;
+      var reader = new FileReader();
+      reader.onload = function () {
+        var dataUrl = reader.result;
+        if (typeof dataUrl === 'string' && dataUrl.length > 2500000) {
+          alert('Image trop lourde (quota ~5 Mo). Choisis une image plus petite.');
+          return;
+        }
+        if (cutoutSection) cutoutSection.hidden = true;
+        if (cutoutPreview) {
+          cutoutPreview.removeAttribute('src');
+          cutoutPreview.hidden = true;
+        }
+        if (cutoutPlaceholder) cutoutPlaceholder.hidden = true;
+        userPickedPhoto = true;
+        newPhotoOriginal = dataUrl;
+        newPhotoFromFile = dataUrl;
+        preview.src = dataUrl;
+        preview.hidden = false;
+        runCutoutFromDataUrl(dataUrl);
+        if (photoCamera) photoCamera.value = '';
+        if (photoGallery) photoGallery.value = '';
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function bindPhotoInput(input) {
+      if (!input) return;
+      input.addEventListener('change', function () {
+        var file = input.files && input.files[0];
+        if (!file) return;
+        loadFileToPreview(file);
+      });
+      input.addEventListener('rt-file', function (e) {
+        if (e.detail && e.detail.file) loadFileToPreview(e.detail.file);
+      });
+    }
+    bindPhotoInput(photoCamera);
+    bindPhotoInput(photoGallery);
+
+    if (btnRelaunchCutout) {
+      btnRelaunchCutout.addEventListener('click', function () {
+        var src = newPhotoOriginal || (preview && preview.src) || '';
+        if (src && src.indexOf('data:') === 0) runCutoutFromDataUrl(src);
+        else alert('Choisis ou prends une photo d’abord.');
+      });
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!userPickedPhoto || !newPhotoFromFile) {
+        alert('Ajoute une photo du vêtement avant de continuer.');
+        return;
+      }
+      try {
+        sessionStorage.setItem(STORAGE_DON_NOM, (nomInput && nomInput.value.trim()) || '');
+        sessionStorage.setItem(STORAGE_DON_PHOTO, newPhotoFromFile);
+        if (newPhotoOriginal) sessionStorage.setItem(STORAGE_DON_ORIGINAL, newPhotoOriginal);
+      } catch (err) {
+        console.warn(err);
+        alert('Impossible d’enregistrer la photo (stockage plein ?). Réessaie avec une image plus légère.');
+        return;
+      }
+      window.location.href = 'donner-questions.html';
+    });
+  }
+
+  function showStoredDonNouveauPhoto(rootId) {
+    var root = document.getElementById(rootId);
+    if (!root) return;
+    var url = null;
+    try {
+      url = sessionStorage.getItem(STORAGE_DON_PHOTO);
+    } catch (e) {
+      return;
+    }
+    if (!url || url.indexOf('data:') !== 0) {
+      root.hidden = true;
+      return;
+    }
+    root.hidden = false;
+    root.innerHTML = '';
+    var hint = document.createElement('p');
+    hint.className = 'rt-page-hint';
+    hint.textContent = 'Photo et découpage enregistrés pour ce dossier (aperçu ci-dessous).';
+    root.appendChild(hint);
+    var img = document.createElement('img');
+    img.src = url;
+    img.alt = 'Vêtement pour le don';
+    img.width = 160;
+    img.style.maxWidth = '100%';
+    img.style.height = 'auto';
+    img.style.borderRadius = 'var(--rt-radius-sm)';
+    img.style.border = '1px solid var(--rt-border)';
+    root.appendChild(img);
+  }
+
+  function initDonnerQuestionsRecap() {
+    showStoredDonNouveauPhoto('donner-recap-photo');
+  }
+
+  function initDonnerAnalyseRecap() {
+    showStoredDonNouveauPhoto('donner-recap-photo');
+  }
+
   function init(page) {
     switch (page) {
       case 'inventory':
@@ -971,6 +1149,15 @@
         break;
       case 'add-photo':
         initAddPhoto();
+        break;
+      case 'donner-nouveau':
+        initDonnerNouveauPhoto();
+        break;
+      case 'donner-questions':
+        initDonnerQuestionsRecap();
+        break;
+      case 'donner-analyse':
+        initDonnerAnalyseRecap();
         break;
       case 'outfit-form':
         initOutfitForm();

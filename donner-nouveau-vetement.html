@@ -6,38 +6,61 @@
   <link rel="stylesheet" href="css/relais.css">
   <title>Relais Textile — Donner (nouveau)</title>
 </head>
-<body class="rt-has-tabbar">
+<body class="rt-has-tabbar" data-page="donner-nouveau">
   <p class="brand-row"><a href="index.html" class="brand" aria-label="Relais Textile accueil"><span class="brand-emoji" aria-hidden="true">🧵</span> <span class="brand-name">Relais Textile</span></a></p>
   <header>
     <nav>
-      <p><a href="home.html">Retour Home</a> — <a href="carte.html">Carte</a></p>
+      <p><a href="donner.html">Donner</a> — <a href="home.html">Home</a> — <a href="carte.html">Carte</a></p>
     </nav>
     <h1>Donner — nouveau vêtement</h1>
-    <p class="rt-page-hint">Saisie + photo → analyse donabilité → si OK, ajout au sac.</p>
+    <p class="rt-page-hint">Saisie + photo → découpage → analyse de donabilité → si OK, ajout au sac.</p>
   </header>
   <main>
-    <form action="#" method="get">
+    <form id="donner-nouveau-form" action="#" method="get">
       <p>
         <label for="nom">Nom / type</label>
-        <input id="nom" name="nom" type="text">
+        <input id="nom" name="nom" type="text" autocomplete="off">
       </p>
+      <section aria-labelledby="don-zone-photo">
+        <h2 id="don-zone-photo">Photo du vêtement</h2>
+        <p>
+          <span id="don-photo-label">Prendre ou importer une photo</span>
+        </p>
+        <input id="don-photo-camera" name="photo" type="file" accept="image/*" capture="environment" hidden aria-hidden="true" tabindex="-1">
+        <input id="don-photo-gallery" name="photo_gallery" type="file" accept="image/*" hidden aria-hidden="true" tabindex="-1">
+        <div class="rt-photo-actions" role="group" aria-labelledby="don-photo-label">
+          <button type="button" class="rt-photo-btn" id="btn-don-photo-camera" data-rt-camera-for="don-photo-camera">📷 Prendre une photo</button>
+          <button type="button" class="rt-photo-btn" id="btn-don-photo-gallery" data-rt-gallery-for="don-photo-gallery">Galerie</button>
+        </div>
+        <p class="rt-photo-hint"><strong>Prendre une photo</strong> active la caméra (aperçu puis capture). <strong>Galerie</strong> choisit une image enregistrée.</p>
+        <p>
+          <img id="don-photo-preview" alt="Aperçu du vêtement" width="200" hidden>
+        </p>
+      </section>
+      <section aria-labelledby="don-decoupe-titre">
+        <h2 id="don-decoupe-titre">Découpage (simulation)</h2>
+        <p id="don-cutout-placeholder" class="rt-page-hint">L’aperçu découpe apparaît après la photo (comme pour la garde-robe).</p>
+        <p id="don-cutout-status" class="rt-photo-hint" aria-live="polite" hidden></p>
+        <div id="don-cutout-section" hidden>
+          <p class="rt-photo-hint">Fond retiré côté navigateur (prototype).</p>
+          <div class="rt-cutout-frame">
+            <img id="don-cutout-preview" alt="Aperçu découpage" width="220" hidden>
+          </div>
+          <p>
+            <button type="button" id="don-btn-relaunch-cutout">Relancer le découpage</button>
+          </p>
+        </div>
+      </section>
       <p>
-        <span id="don-photo-label">Zone photo</span>
-      </p>
-      <input id="don-photo-camera" name="photo" type="file" accept="image/*" capture="environment" hidden>
-      <input id="don-photo-gallery" name="photo_gallery" type="file" accept="image/*" hidden>
-      <div class="rt-photo-actions" role="group" aria-labelledby="don-photo-label">
-        <button type="button" class="rt-photo-btn" id="btn-don-photo-camera" data-rt-camera-for="don-photo-camera">📷 Prendre une photo</button>
-        <button type="button" class="rt-photo-btn" id="btn-don-photo-gallery" data-rt-gallery-for="don-photo-gallery">Galerie</button>
-      </div>
-      <p class="rt-photo-hint"><strong>Prendre une photo</strong> active la caméra (aperçu puis capture). <strong>Galerie</strong> choisit une image enregistrée.</p>
-      <p>
-        <button type="submit" formaction="donner-questions.html">Continuer vers les questions</button>
+        <button type="submit" id="don-btn-continuer-questions">Continuer vers les questions</button>
         <a href="donner-depuis-garde-robe.html">Plutôt choisir depuis la garde-robe</a>
       </p>
     </form>
   </main>
   <script defer src="js/rt-camera.js"></script>
+  <script defer src="js/rt-cutout.js"></script>
+  <script defer src="js/wardrobe-store.js"></script>
+  <script defer src="js/wardrobe-pages.js"></script>
   <nav class="rt-tabbar" aria-label="Raccourcis">
     <a href="garde-robe.html" class="rt-tabbar__item"><span class="rt-tabbar__icon" aria-hidden="true">👔</span><span class="rt-tabbar__label">Garde-robe</span></a>
     <a href="reparer.html" class="rt-tabbar__item"><span class="rt-tabbar__icon" aria-hidden="true">🧵</span><span class="rt-tabbar__label">Réparer</span></a>
