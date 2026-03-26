@@ -270,7 +270,10 @@
     var cutoutPreview = document.getElementById('photo-cutout-preview');
     var cutoutSection = document.getElementById('photo-cutout-section');
     var cutoutPlaceholder = document.getElementById('photo-cutout-placeholder');
+    var cutoutStatus = document.getElementById('photo-cutout-status');
     var btnRelaunchCutout = document.getElementById('btn-relaunch-cutout');
+    var submitBtn = form.querySelector('button[type="submit"]');
+    var RTCutout = window.RTCutout;
 
     function applyCutoutPreview(dataUrl) {
       if (!dataUrl) return;
@@ -282,6 +285,44 @@
       if (cutoutSection) cutoutSection.hidden = false;
     }
 
+    function setCutoutBusy(busy, message) {
+      if (cutoutStatus) {
+        if (busy && message) {
+          cutoutStatus.hidden = false;
+          cutoutStatus.textContent = message;
+        } else {
+          cutoutStatus.textContent = '';
+          cutoutStatus.hidden = true;
+        }
+      }
+      if (submitBtn) submitBtn.disabled = !!busy;
+      if (btnRelaunchCutout) btnRelaunchCutout.disabled = !!busy;
+    }
+
+    /** Découpage simulé (PNG transparent) ; repli sur l’original si indisponible ou erreur */
+    function runCutoutFromDataUrl(dataUrl) {
+      if (!dataUrl || typeof dataUrl !== 'string') return;
+      if (!RTCutout || typeof RTCutout.apply !== 'function') {
+        applyCutoutPreview(dataUrl);
+        newPhotoFromFile = dataUrl;
+        return;
+      }
+      setCutoutBusy(true, 'Découpage en cours…');
+      window.setTimeout(function () {
+        RTCutout.apply(dataUrl, function (err, pngDataUrl) {
+          setCutoutBusy(false);
+          if (!err && pngDataUrl) {
+            applyCutoutPreview(pngDataUrl);
+            newPhotoFromFile = pngDataUrl;
+          } else {
+            if (err) console.warn('wardrobe-pages: découpage', err);
+            applyCutoutPreview(dataUrl);
+            newPhotoFromFile = dataUrl;
+          }
+        });
+      }, 0);
+    }
+
     function loadFileToPreview(file) {
       if (!file || !preview) return;
       var reader = new FileReader();
@@ -291,11 +332,17 @@
           alert('Image trop lourde pour le stockage local (quota ~5 Mo). Choisis une image plus petite.');
           return;
         }
+        if (cutoutSection) cutoutSection.hidden = true;
+        if (cutoutPreview) {
+          cutoutPreview.removeAttribute('src');
+          cutoutPreview.hidden = true;
+        }
+        if (cutoutPlaceholder) cutoutPlaceholder.hidden = true;
         userPickedNewPhoto = true;
         newPhotoFromFile = dataUrl;
         preview.src = dataUrl;
         preview.hidden = false;
-        applyCutoutPreview(dataUrl);
+        runCutoutFromDataUrl(dataUrl);
         if (photoCamera) photoCamera.value = '';
         if (photoGallery) photoGallery.value = '';
       };
@@ -318,9 +365,12 @@
 
     if (btnRelaunchCutout) {
       btnRelaunchCutout.addEventListener('click', function () {
-        var src = newPhotoFromFile || (preview && preview.src) || '';
-        if (src && src.indexOf('data:') === 0) applyCutoutPreview(src);
-        else alert('Choisis ou prends une photo à l’étape 1 d’abord.');
+        var src = (preview && preview.src) || newPhotoFromFile || '';
+        if (src && src.indexOf('data:') === 0) {
+          runCutoutFromDataUrl(src);
+        } else {
+          alert('Choisis ou prends une photo à l’étape 1 d’abord.');
+        }
       });
     }
 

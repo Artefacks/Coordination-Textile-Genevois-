@@ -53,9 +53,10 @@
       <section aria-labelledby="etape-api">
         <h2 id="etape-api">2. API IA — découpage du vêtement</h2>
         <p>L’image est envoyée à une <strong>API d’IA</strong> qui <strong>isole / détoure</strong> le vêtement (fond retiré, silhouette nette).</p>
-        <p id="photo-cutout-placeholder">L’aperçu découpe s’affiche ici après une photo à l’étape 1 (aperçu simulé côté app, sans serveur).</p>
+        <p id="photo-cutout-placeholder">L’aperçu découpe s’affiche ici après une photo à l’étape 1 (découpage simulé dans le navigateur, sans serveur).</p>
+        <p id="photo-cutout-status" class="rt-photo-hint" aria-live="polite" hidden></p>
         <div id="photo-cutout-section" hidden>
-          <p class="rt-photo-hint">Aperçu sur fond neutre (simulation — l’API IA remplacera par un vrai détourage).</p>
+          <p class="rt-photo-hint">Fond retiré par estimation des couleurs du bord (prototype). Un vrai service IA donnera un meilleur résultat sur fonds chargés.</p>
           <div class="rt-cutout-frame">
             <img id="photo-cutout-preview" alt="Aperçu découpage simulé" width="220" hidden>
           </div>
@@ -102,6 +103,7 @@
     </form>
   </main>
   <script defer src="js/rt-camera.js"></script>
+  <script defer src="js/rt-cutout.js"></script>
   <script defer src="js/wardrobe-store.js"></script>
   <script defer src="js/wardrobe-pages.js"></script>
   <nav class="rt-tabbar" aria-label="Raccourcis">
