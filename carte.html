@@ -4,31 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <link rel="stylesheet" href="css/relais.css">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
   <title>Reviva — Carte (développement)</title>
-  <style>
-    .rt-mini-map-wrap { margin: 0.75rem 0 1.25rem; }
-    .rt-mini-map-wrap .rt-mini-map {
-      height: 220px;
-      width: 100%;
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid #e7e5e4;
-      background: #f5f5f4;
-    }
-    .rt-mini-map-wrap .leaflet-container { font: inherit; }
-    .rt-map-pin {
-      width: 28px; height: 28px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 700; font-size: 0.85rem; color: #fff;
-      border: 2px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,.25);
-    }
-    .rt-map-pin-leaflet { background: transparent !important; border: none !important; }
-    .rt-map-pin--a { background: #ef3e37; }
-    .rt-map-pin--b { background: #1c1917; }
-    .rt-mini-map-legend { margin: 0.5rem 0 0; font-size: 0.9rem; color: #57534e; }
-    .rt-mini-map-legend span { margin-right: 1rem; }
-  </style>
 </head>
 <body class="rt-has-tabbar">
   <p class="brand-row"><a href="index.html" class="brand" aria-label="Reviva accueil"><span class="brand-emoji" aria-hidden="true">🧵</span> <span class="brand-name">Reviva</span></a></p>
@@ -107,43 +83,6 @@
       <li><a href="reparer-devis-artisans.html">Devis artisans</a></li>
     </ul>
   </main>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      var el = document.getElementById('map-boites-fringues');
-      if (!el || typeof L === 'undefined') return;
-
-      /* Centre-ville Genève (A) et centre Carouge (B) — coordonnées approximatives */
-      var latA = 46.2044, lngA = 6.1432;
-      var latB = 46.1849, lngB = 6.1392;
-
-      var map = L.map(el, { scrollWheelZoom: false, attributionControl: true });
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>'
-      }).addTo(map);
-
-      function pin(label, className) {
-        return L.divIcon({
-          className: 'rt-map-pin-leaflet',
-          html: '<div class="rt-map-pin ' + className + '" aria-hidden="true">' + label + '</div>',
-          iconSize: [28, 28],
-          iconAnchor: [14, 14],
-          popupAnchor: [0, -12]
-        });
-      }
-
-      var mA = L.marker([latA, lngA], { icon: pin('A', 'rt-map-pin--a') })
-        .bindPopup('Point A — Genève');
-      var mB = L.marker([latB, lngB], { icon: pin('B', 'rt-map-pin--b') })
-        .bindPopup('Point B — Carouge');
-      mA.addTo(map);
-      mB.addTo(map);
-
-      var g = L.featureGroup([mA, mB]);
-      map.fitBounds(g.getBounds().pad(0.2));
-    });
-  </script>
   <nav class="rt-tabbar" aria-label="Raccourcis">
     <a href="garde-robe.html" class="rt-tabbar__item"><span class="rt-tabbar__icon" aria-hidden="true">👔</span><span class="rt-tabbar__label">Garde-robe</span></a>
     <a href="reparer.html" class="rt-tabbar__item"><span class="rt-tabbar__icon" aria-hidden="true">🧵</span><span class="rt-tabbar__label">Réparer</span></a>

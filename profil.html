@@ -44,14 +44,28 @@
       <form action="#" method="get">
         <fieldset>
           <legend>Photo de profil</legend>
-          <p><span id="profil-photo-label">Image</span></p>
           <input id="avatar-camera" name="avatar" type="file" accept="image/*" capture="environment" hidden>
           <input id="avatar-gallery" name="avatar_gallery" type="file" accept="image/*" hidden>
-          <div class="rt-photo-actions" role="group" aria-labelledby="profil-photo-label">
-            <button type="button" class="rt-photo-btn" data-rt-camera-for="avatar-camera">📷 Prendre une photo</button>
-            <button type="button" class="rt-photo-btn" data-rt-gallery-for="avatar-gallery">Galerie</button>
+          <div class="rt-avatar-wrap">
+            <button type="button" class="rt-avatar-trigger" id="btn-avatar-open" aria-haspopup="dialog" aria-controls="avatar-dialog" aria-label="Changer la photo de profil">
+              <span class="rt-avatar-inner">
+                <img id="avatar-preview" src="" alt="" width="88" height="88" hidden>
+                <span class="rt-avatar-placeholder" aria-hidden="true">🧑</span>
+              </span>
+            </button>
+            <p class="rt-page-hint">Touche l’avatar pour ouvrir le choix d’image.</p>
           </div>
-          <p class="rt-photo-hint"><strong>Prendre une photo</strong> active la caméra ; <strong>Galerie</strong> choisit une image enregistrée.</p>
+          <dialog id="avatar-dialog" class="rt-modal-avatar" aria-labelledby="avatar-dialog-title">
+            <div class="rt-modal-avatar__body">
+              <h2 id="avatar-dialog-title">Image</h2>
+              <div class="rt-photo-actions" role="group" aria-label="Source de l’image">
+                <button type="button" class="rt-photo-btn" data-rt-camera-for="avatar-camera">📷 Prendre une photo</button>
+                <button type="button" class="rt-photo-btn" data-rt-gallery-for="avatar-gallery">Galerie</button>
+              </div>
+              <p class="rt-photo-hint"><strong>Prendre une photo</strong> active la caméra ; <strong>Galerie</strong> choisit une image enregistrée.</p>
+              <button type="button" class="rt-modal-avatar__close" id="btn-avatar-dialog-close">Fermer</button>
+            </div>
+          </dialog>
         </fieldset>
         <fieldset>
           <legend>Adresse</legend>
@@ -84,6 +98,61 @@
     </section>
   </main>
   <script defer src="js/rt-camera.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var dlg = document.getElementById('avatar-dialog');
+      var btnOpen = document.getElementById('btn-avatar-open');
+      var btnClose = document.getElementById('btn-avatar-dialog-close');
+      var preview = document.getElementById('avatar-preview');
+      var placeholder = document.querySelector('.rt-avatar-placeholder');
+
+      function showPreviewFromFile(file) {
+        if (!file || !file.type || file.type.indexOf('image/') !== 0) return;
+        var url = URL.createObjectURL(file);
+        preview.onload = function () {
+          URL.revokeObjectURL(url);
+        };
+        preview.src = url;
+        preview.alt = 'Photo de profil';
+        preview.removeAttribute('hidden');
+        if (placeholder) placeholder.setAttribute('hidden', '');
+      }
+
+      function bindInput(id) {
+        var input = document.getElementById(id);
+        if (!input) return;
+        input.addEventListener('change', function () {
+          if (input.files && input.files[0]) showPreviewFromFile(input.files[0]);
+        });
+        input.addEventListener('rt-file', function (e) {
+          if (e.detail && e.detail.file) showPreviewFromFile(e.detail.file);
+        });
+      }
+      bindInput('avatar-camera');
+      bindInput('avatar-gallery');
+
+      if (btnOpen && dlg && dlg.showModal) {
+        btnOpen.addEventListener('click', function () {
+          dlg.showModal();
+        });
+      }
+      if (btnClose && dlg) {
+        btnClose.addEventListener('click', function () {
+          dlg.close();
+        });
+      }
+      if (dlg) {
+        dlg.addEventListener('click', function (e) {
+          if (e.target === dlg) dlg.close();
+        });
+        dlg.addEventListener('click', function (e) {
+          if (e.target.closest('[data-rt-camera-for], [data-rt-gallery-for]')) {
+            dlg.close();
+          }
+        });
+      }
+    });
+  </script>
   <nav class="rt-tabbar" aria-label="Raccourcis">
     <a href="garde-robe.html" class="rt-tabbar__item"><span class="rt-tabbar__icon" aria-hidden="true">👔</span><span class="rt-tabbar__label">Garde-robe</span></a>
     <a href="reparer.html" class="rt-tabbar__item"><span class="rt-tabbar__icon" aria-hidden="true">🧵</span><span class="rt-tabbar__label">Réparer</span></a>

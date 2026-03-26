@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <link rel="stylesheet" href="css/relais.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
   <title>Reviva — Don — succès</title>
 </head>
 <body class="rt-has-tabbar">
@@ -17,15 +18,16 @@
   </header>
   <main>
     <p>Succès — étape de dépôt.</p>
-    <section aria-labelledby="boites">
-      <h2 id="boites">Boîtes à fringues</h2>
-      <ul>
-        <li>Point A — Genève</li>
-        <li>Point B — Carouge</li>
-      </ul>
+    <section class="rt-mini-map-wrap" aria-labelledby="boites-fringues-title">
+      <h2 id="boites-fringues-title">Boîtes à fringues</h2>
+      <p class="rt-page-hint">Emplacements d’exemple sur Genève et Carouge (carte interactive).</p>
+      <div id="map-boites-fringues" class="rt-mini-map" role="img" aria-label="Carte Genève et Carouge, points A et B"></div>
+      <p class="rt-mini-map-legend"><span><strong>A</strong> — Genève</span><span><strong>B</strong> — Carouge</span></p>
     </section>
     <p><a href="home.html">Retour Home</a></p>
   </main>
+  <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script defer src="js/rt-map-boites.js"></script>
   <nav class="rt-tabbar" aria-label="Raccourcis">
     <a href="garde-robe.html" class="rt-tabbar__item"><span class="rt-tabbar__icon" aria-hidden="true">👔</span><span class="rt-tabbar__label">Garde-robe</span></a>
     <a href="reparer.html" class="rt-tabbar__item"><span class="rt-tabbar__icon" aria-hidden="true">🧵</span><span class="rt-tabbar__label">Réparer</span></a>
