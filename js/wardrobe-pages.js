@@ -1107,6 +1107,7 @@
   function showStoredDonNouveauPhoto(rootId) {
     var root = document.getElementById(rootId);
     if (!root) return;
+    var wrap = document.getElementById('donner-recap-section');
     var url = null;
     try {
       url = sessionStorage.getItem(STORAGE_DON_PHOTO);
@@ -1114,9 +1115,12 @@
       return;
     }
     if (!url || url.indexOf('data:') !== 0) {
+      root.innerHTML = '';
       root.hidden = true;
+      if (wrap) wrap.hidden = true;
       return;
     }
+    if (wrap) wrap.hidden = false;
     root.hidden = false;
     root.innerHTML = '';
     var hint = document.createElement('p');

@@ -1,26 +1,42 @@
 /**
- * Découpage simulé côté navigateur (sans API) : fond estimé depuis le pourtour
- * de l’image, pixels proches rendus transparents. Fonctionne mieux sur fond
- * assez uniforme (mur, drap, sol clair).
+ * Découpage simulé côté navigateur (sans API) : fond estimé depuis le pourtour,
+ * pixels proches rendus transparents. Améliorations : médiane sur le bord (moins
+ * sensible aux points du sujet sur le bord), distance couleur type « redmean »,
+ * léger lissage du canal alpha pour des contours plus propres.
  */
 (function () {
-  function distRgb(r1, g1, b1, r2, g2, b2) {
+  /**
+   * Distance perceptuelle approximative (sRGB) — mieux qu’Euclidien pur sur RGB.
+   * Voir https://www.compuphase.com/cmetric.htm
+   */
+  function distRgbRedmean(r1, g1, b1, r2, g2, b2) {
+    var rmean = (r1 + r2) / 2;
+    var dr = r1 - r2;
+    var dg = g1 - g2;
+    var db = b1 - b2;
     return Math.sqrt(
-      (r1 - r2) * (r1 - r2) + (g1 - g2) * (g1 - g2) + (b1 - b2) * (b1 - b2)
+      (2 + rmean / 256) * dr * dr + 4 * dg * dg + (2 + (255 - rmean) / 256) * db * db
     );
   }
 
-  function sampleBorderBg(data, cw, ch) {
-    var br = 0;
-    var bg = 0;
-    var bb = 0;
-    var n = 0;
+  function medianChannel(values) {
+    var a = values.slice().sort(function (x, y) {
+      return x - y;
+    });
+    var mid = Math.floor(a.length / 2);
+    return a.length % 2 ? a[mid] : (a[mid - 1] + a[mid]) / 2;
+  }
+
+  /** Médiane par canal sur le pourtour — plus stable que la moyenne si le vêtement touche le bord. */
+  function sampleBorderMedian(data, cw, ch) {
+    var rs = [];
+    var gs = [];
+    var bs = [];
     function add(x, y) {
       var i = (y * cw + x) * 4;
-      br += data[i];
-      bg += data[i + 1];
-      bb += data[i + 2];
-      n++;
+      rs.push(data[i]);
+      gs.push(data[i + 1]);
+      bs.push(data[i + 2]);
     }
     var x;
     var y;
@@ -32,16 +48,61 @@
       add(0, y);
       add(cw - 1, y);
     }
-    if (!n) return { r: 255, g: 255, b: 255 };
-    return { r: br / n, g: bg / n, b: bb / n };
+    if (!rs.length) return { r: 255, g: 255, b: 255 };
+    return {
+      r: medianChannel(rs),
+      g: medianChannel(gs),
+      b: medianChannel(bs),
+    };
+  }
+
+  /** Lissage léger du canal alpha (3×3) pour réduire le crénelage. */
+  function smoothAlpha3x3(d, cw, ch) {
+    var n = cw * ch;
+    var alpha = new Uint8Array(n);
+    var p;
+    var i;
+    for (p = 0, i = 0; p < n; p++, i += 4) {
+      alpha[p] = d[i + 3];
+    }
+    var out = new Uint8Array(n);
+    var x;
+    var y;
+    var dx;
+    var dy;
+    var nx;
+    var ny;
+    var sum;
+    var count;
+    for (y = 0; y < ch; y++) {
+      for (x = 0; x < cw; x++) {
+        sum = 0;
+        count = 0;
+        for (dy = -1; dy <= 1; dy++) {
+          for (dx = -1; dx <= 1; dx++) {
+            nx = x + dx;
+            ny = y + dy;
+            if (nx >= 0 && nx < cw && ny >= 0 && ny < ch) {
+              sum += alpha[ny * cw + nx];
+              count++;
+            }
+          }
+        }
+        out[y * cw + x] = Math.round(sum / count);
+      }
+    }
+    for (p = 0, i = 0; p < n; p++, i += 4) {
+      d[i + 3] = out[p];
+    }
   }
 
   /**
    * @param {string} dataUrl - image/jpeg ou image/png
    * @param {object} [opts]
-   * @param {number} [opts.maxSide=720] - côté max du traitement (perf)
-   * @param {number} [opts.tolerance=48] - distance couleur max pour « fond »
-   * @param {number} [opts.feather=32] - transition douce bord détourage
+   * @param {number} [opts.maxSide=800] - côté max du traitement (perf)
+   * @param {number} [opts.tolerance=56] - distance couleur max pour « fond »
+   * @param {number} [opts.feather=42] - transition douce bord détourage
+   * @param {boolean} [opts.smoothAlpha=true] - lissage du canal alpha
    * @param {function(Error|null, string|null)} callback - data URL PNG ou null
    */
   function apply(dataUrl, opts, callback) {
@@ -50,9 +111,10 @@
       opts = {};
     }
     opts = opts || {};
-    var maxSide = opts.maxSide !== undefined ? opts.maxSide : 720;
-    var tolerance = opts.tolerance !== undefined ? opts.tolerance : 48;
-    var feather = opts.feather !== undefined ? opts.feather : 32;
+    var maxSide = opts.maxSide !== undefined ? opts.maxSide : 800;
+    var tolerance = opts.tolerance !== undefined ? opts.tolerance : 56;
+    var feather = opts.feather !== undefined ? opts.feather : 42;
+    var smoothAlpha = opts.smoothAlpha !== false;
 
     if (!dataUrl || typeof dataUrl !== 'string' || dataUrl.indexOf('data:') !== 0) {
       callback(new Error('Data URL invalide'), null);
@@ -83,25 +145,28 @@
         ctx.drawImage(img, 0, 0, cw, ch);
         var imageData = ctx.getImageData(0, 0, cw, ch);
         var d = imageData.data;
-        var bg = sampleBorderBg(d, cw, ch);
+        var bg = sampleBorderMedian(d, cw, ch);
         var br = bg.r;
         var bgG = bg.g;
         var bgB = bg.b;
         var t = tolerance;
         var f = Math.max(1, feather);
-        var i;
-        for (i = 0; i < d.length; i += 4) {
-          var r = d[i];
-          var g = d[i + 1];
-          var b = d[i + 2];
-          var dist = distRgb(r, g, b, br, bgG, bgB);
+        var idx;
+        for (idx = 0; idx < d.length; idx += 4) {
+          var r = d[idx];
+          var g = d[idx + 1];
+          var b = d[idx + 2];
+          var dist = distRgbRedmean(r, g, b, br, bgG, bgB);
           if (dist <= t) {
-            d[i + 3] = 0;
+            d[idx + 3] = 0;
           } else if (dist >= t + f) {
-            d[i + 3] = 255;
+            d[idx + 3] = 255;
           } else {
-            d[i + 3] = Math.round((255 * (dist - t)) / f);
+            d[idx + 3] = Math.round((255 * (dist - t)) / f);
           }
+        }
+        if (smoothAlpha) {
+          smoothAlpha3x3(d, cw, ch);
         }
         ctx.putImageData(imageData, 0, 0);
         var out = canvas.toDataURL('image/png');
