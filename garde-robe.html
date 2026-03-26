@@ -13,30 +13,22 @@
       <p><a href="dashboard.html">Retour hub</a> — <a href="carte.html">Carte</a></p>
     </nav>
     <h1>Garde-robe — gestion</h1>
+    <p class="rt-page-hint">Inventaire enregistré sur cet appareil. Modifie, compose des outfits.</p>
   </header>
   <main>
-    <section aria-labelledby="filtres">
-      <h2 id="filtres">Filtres par catégorie</h2>
-      <form id="garment-filter-form" action="#" method="get">
-        <p>
-          <label for="categorie">Catégorie</label>
-          <select id="categorie" name="categorie">
-            <option value="">Toutes</option>
-            <option value="haut">Hauts</option>
-            <option value="bas">Bas</option>
-            <option value="chaussures">Chaussures</option>
-            <option value="accessoires">Accessoires</option>
-          </select>
-          <button type="button" id="btn-appliquer-filtre">Appliquer</button>
-        </p>
-      </form>
+    <section class="rt-hub-primary" aria-labelledby="add-garment">
+      <h2 id="add-garment">Ajouter un vêtement</h2>
+      <p class="rt-page-hint">Photo, qualité, donnable — puis retour ici.</p>
+      <p><a href="garde-robe-ajouter-photo.html" class="rt-btn-hub-primary">Ajouter un vêtement</a></p>
     </section>
     <section aria-labelledby="inv">
       <h2 id="inv">Inventaire</h2>
+      <p class="rt-page-hint">Chaque ligne : aperçu, modifier ou supprimer.</p>
       <ul id="garment-list"></ul>
     </section>
     <section aria-labelledby="outfits">
       <h2 id="outfits">Outfits</h2>
+      <p class="rt-page-hint">Regroupe des pièces pour un look et partage éventuel.</p>
       <nav>
         <ul>
           <li><a href="garde-robe-outfits.html">Mes outfits enregistrés</a></li>
@@ -45,10 +37,9 @@
       </nav>
     </section>
     <section aria-labelledby="actions">
-      <h2 id="actions">Actions</h2>
+      <h2 id="actions">Autres parcours</h2>
       <nav>
         <ul>
-          <li><a href="garde-robe-ajouter.html">Ajouter un vêtement</a></li>
           <li><a href="marketplace.html">Marketplace</a></li>
           <li><a href="donner.html">Donner</a></li>
         </ul>

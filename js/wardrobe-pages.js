@@ -149,17 +149,14 @@
     maybeSeed();
     var state = WS.loadState();
     var listEl = document.getElementById('garment-list');
-    var form = document.getElementById('garment-filter-form');
-    var select = document.getElementById('categorie');
-    if (!listEl || !select) return;
+    if (!listEl) return;
 
     function render() {
-      var cat = select.value || '';
-      var items = WS.getGarmentsFiltered(state, cat);
+      var items = WS.getGarmentsFiltered(state, '');
       listEl.innerHTML = '';
       if (items.length === 0) {
         var empty = document.createElement('li');
-        empty.textContent = 'Aucun vêtement pour ce filtre.';
+        empty.textContent = 'Aucun vêtement dans la garde-robe.';
         listEl.appendChild(empty);
         return;
       }
@@ -235,20 +232,6 @@
       });
     }
 
-    if (form) {
-      form.addEventListener('submit', function (e) {
-        e.preventDefault();
-        render();
-      });
-    }
-    select.addEventListener('change', render);
-    var btnApply = document.getElementById('btn-appliquer-filtre');
-    if (btnApply) {
-      btnApply.addEventListener('click', function (e) {
-        e.preventDefault();
-        render();
-      });
-    }
     render();
   }
 

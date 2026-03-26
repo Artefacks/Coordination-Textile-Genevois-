@@ -67,7 +67,7 @@
       b.textContent = label;
       b.style.cssText =
         'min-height:48px;padding:0.5rem 1rem;font:inherit;font-weight:600;border-radius:10px;cursor:pointer;border:1px solid #e7e5e4;' +
-        (primary ? 'background:#0f766e;color:#fff;border-color:#0f766e;' : 'background:#fff;color:#1c1917;');
+        (primary ? 'background:#ef3e37;color:#fff;border-color:#c52a24;' : 'background:#fff;color:#1c1917;');
       return b;
     }
 

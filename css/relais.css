@@ -1,14 +1,18 @@
-/* Relais Textile — UX app (minimum viable) */
+/* Relais Textile — UX app (minimum viable) — palette Rossiny */
 :root {
-  --rt-bg: #fafaf9;
+  --rt-brand-red: #ef3e37;
+  --rt-brand-yellow: #fae098;
+  --rt-bg: #fffdf8;
   --rt-surface: #ffffff;
-  --rt-elevated: #f5f5f4;
-  --rt-border: #e7e5e4;
+  --rt-elevated: #fff9ed;
+  --rt-border: #ebe4d6;
   --rt-text: #1c1917;
-  --rt-muted: #78716c;
-  --rt-primary: #0d9488;
-  --rt-primary-dark: #0f766e;
-  --rt-primary-soft: #ccfbf1;
+  --rt-muted: #6b6560;
+  --rt-primary: var(--rt-brand-red);
+  --rt-primary-dark: #c52a24;
+  --rt-primary-soft: #fef4d0;
+  --rt-accent: var(--rt-brand-yellow);
+  --rt-accent-muted: #fcf0c4;
   --rt-radius: 14px;
   --rt-radius-sm: 10px;
   --rt-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
@@ -22,7 +26,7 @@
 html {
   box-sizing: border-box;
   min-height: 100%;
-  background: radial-gradient(120% 80% at 50% 20%, #44403c 0%, #1c1917 55%, #0c0a09 100%);
+  background: radial-gradient(120% 80% at 50% 15%, #5c2c28 0%, #2a1514 50%, #0c0808 100%);
   padding: clamp(0.75rem, 3vw, 1.5rem) clamp(0.5rem, 2vw, 1rem) 2rem;
 }
 
@@ -633,7 +637,7 @@ section p a:not([class]) {
 .rt-tabbar__item:hover,
 .rt-tabbar__item:focus-visible {
   color: var(--rt-primary-dark);
-  background: var(--rt-elevated);
+  background: var(--rt-accent-muted);
   outline: none;
 }
 
@@ -692,6 +696,18 @@ body.rt-has-tabbar main {
   line-height: 1.4;
 }
 
+/* Fil conducteur (nouveau utilisateur) — phrase courte : où tu es, étape suivante */
+.rt-page-hint {
+  font-size: 0.8125rem;
+  color: var(--rt-muted);
+  margin: 0.35rem 0 0;
+  line-height: 1.45;
+}
+
+header .rt-page-hint {
+  margin-top: 0.4rem;
+}
+
 /* Aperçu « découpage » (prototype — fond type studio) */
 .rt-cutout-frame {
   display: inline-block;
@@ -709,6 +725,131 @@ body.rt-has-tabbar main {
   max-width: 100%;
   height: auto;
   vertical-align: middle;
+}
+
+/* Page d’accueil (landing) — sans tabbar */
+body.rt-landing {
+  padding-bottom: 1.5rem;
+}
+
+.brand-row.rt-landing-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.rt-auth-nav {
+  font-size: 0.8125rem;
+  flex-shrink: 0;
+}
+
+.rt-auth-nav a {
+  color: var(--rt-primary-dark);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.rt-auth-nav a:hover {
+  text-decoration: underline;
+}
+
+.rt-auth-nav .rt-auth-sep {
+  color: var(--rt-muted);
+  font-weight: 400;
+  margin: 0 0.2rem;
+}
+
+.rt-landing-lead {
+  font-size: 1rem;
+  line-height: 1.55;
+  margin: 0 0 1rem;
+  color: var(--rt-text);
+}
+
+.rt-landing-features {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.rt-landing-features li {
+  position: relative;
+  padding: 0.5rem 0 0.5rem 1.35rem;
+  border-bottom: 1px solid var(--rt-border);
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.rt-landing-features li:last-child {
+  border-bottom: none;
+}
+
+.rt-landing-features li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--rt-primary-dark);
+  font-weight: 700;
+}
+
+.rt-landing-cta {
+  margin-top: 1.25rem;
+  text-align: center;
+}
+
+a.rt-cta-start {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--rt-touch);
+  padding: 0.65rem 1.35rem;
+  background: linear-gradient(180deg, var(--rt-primary) 0%, var(--rt-primary-dark) 100%);
+  color: #fff !important;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1rem;
+  border-radius: var(--rt-radius-sm);
+  box-shadow: var(--rt-shadow-md);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+a.rt-cta-start:hover,
+a.rt-cta-start:focus-visible {
+  filter: brightness(1.05);
+  outline: 2px solid var(--rt-primary);
+  outline-offset: 2px;
+}
+
+/* Hub — action principale */
+.rt-hub-primary {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+a.rt-btn-hub-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(var(--rt-touch) + 6px);
+  padding: 0.75rem 1rem;
+  background: linear-gradient(180deg, var(--rt-primary) 0%, var(--rt-primary-dark) 100%);
+  color: #fff !important;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1rem;
+  border-radius: var(--rt-radius-sm);
+  box-shadow: var(--rt-shadow-md);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+a.rt-btn-hub-primary:hover,
+a.rt-btn-hub-primary:focus-visible {
+  filter: brightness(1.05);
+  outline: 2px solid var(--rt-primary);
+  outline-offset: 2px;
 }
 
 /* Téléphone réel */
