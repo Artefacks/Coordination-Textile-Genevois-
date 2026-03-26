@@ -21,15 +21,31 @@
         <input id="nom" name="nom" type="text">
       </p>
       <p>
-        <label for="photo">Zone photo</label>
-        <input id="photo" name="photo" type="file" accept="image/*">
+        <span id="don-photo-label">Zone photo</span>
       </p>
+      <input id="don-photo-camera" name="photo" type="file" accept="image/*" capture="environment" hidden>
+      <input id="don-photo-gallery" name="photo_gallery" type="file" accept="image/*" hidden>
+      <div class="rt-photo-actions" role="group" aria-labelledby="don-photo-label">
+        <button type="button" class="rt-photo-btn" id="btn-don-photo-camera">📷 Prendre une photo</button>
+        <button type="button" class="rt-photo-btn" id="btn-don-photo-gallery">Galerie</button>
+      </div>
+      <p class="rt-photo-hint">Sur téléphone : <strong>Prendre une photo</strong> ouvre l’appareil photo ; <strong>Galerie</strong> choisit une image enregistrée.</p>
       <p>
         <button type="submit" formaction="donner-questions.html">Continuer vers les questions</button>
         <a href="donner-depuis-garde-robe.html">Plutôt choisir depuis la garde-robe</a>
       </p>
     </form>
   </main>
+  <script>
+    (function () {
+      var cam = document.getElementById('don-photo-camera');
+      var gal = document.getElementById('don-photo-gallery');
+      var b1 = document.getElementById('btn-don-photo-camera');
+      var b2 = document.getElementById('btn-don-photo-gallery');
+      if (b1 && cam) b1.addEventListener('click', function () { cam.click(); });
+      if (b2 && gal) b2.addEventListener('click', function () { gal.click(); });
+    })();
+  </script>
   <nav class="rt-tabbar" aria-label="Raccourcis">
     <a href="garde-robe.html" class="rt-tabbar__item"><span class="rt-tabbar__icon" aria-hidden="true">👔</span><span class="rt-tabbar__label">Garde-robe</span></a>
     <a href="reparer.html" class="rt-tabbar__item"><span class="rt-tabbar__icon" aria-hidden="true">🧵</span><span class="rt-tabbar__label">Réparer</span></a>

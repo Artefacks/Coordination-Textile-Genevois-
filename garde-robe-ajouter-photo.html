@@ -36,9 +36,15 @@
       <section aria-labelledby="etape-photo">
         <h2 id="etape-photo">1. Prendre ou importer une photo</h2>
         <p>
-          <label for="photo">Photo du vêtement</label>
-          <input id="photo" name="photo" type="file" accept="image/*" capture="environment">
+          <span id="photo-label">Photo du vêtement</span>
         </p>
+        <input id="photo-camera" name="photo-camera" type="file" accept="image/*" capture="environment" hidden aria-hidden="true" tabindex="-1">
+        <input id="photo-gallery" name="photo-gallery" type="file" accept="image/*" hidden aria-hidden="true" tabindex="-1">
+        <div class="rt-photo-actions" role="group" aria-labelledby="photo-label">
+          <button type="button" class="rt-photo-btn" id="btn-photo-camera">📷 Prendre une photo</button>
+          <button type="button" class="rt-photo-btn" id="btn-photo-gallery">Galerie</button>
+        </div>
+        <p class="rt-photo-hint">Sur téléphone : <strong>Prendre une photo</strong> ouvre l’appareil photo ; <strong>Galerie</strong> permet de choisir une image déjà enregistrée.</p>
         <p>
           <img id="photo-preview" alt="Aperçu du vêtement" width="200" hidden>
         </p>

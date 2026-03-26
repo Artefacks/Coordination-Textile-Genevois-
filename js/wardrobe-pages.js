@@ -256,7 +256,10 @@
     maybeSeed();
     var state = WS.loadState();
     var form = document.getElementById('garment-form');
-    var photoInput = document.getElementById('photo');
+    var photoCamera = document.getElementById('photo-camera');
+    var photoGallery = document.getElementById('photo-gallery');
+    var btnCamera = document.getElementById('btn-photo-camera');
+    var btnGallery = document.getElementById('btn-photo-gallery');
     var preview = document.getElementById('photo-preview');
     var editId = getParam('edit');
 
@@ -285,23 +288,44 @@
       }
     }
 
-    if (photoInput && preview) {
-      photoInput.addEventListener('change', function () {
-        var file = photoInput.files && photoInput.files[0];
+    function loadFileToPreview(file) {
+      if (!file || !preview) return;
+      var reader = new FileReader();
+      reader.onload = function () {
+        var dataUrl = reader.result;
+        if (typeof dataUrl === 'string' && dataUrl.length > 2500000) {
+          alert('Image trop lourde pour le stockage local (quota ~5 Mo). Choisis une image plus petite.');
+          return;
+        }
+        userPickedNewPhoto = true;
+        newPhotoFromFile = dataUrl;
+        preview.src = dataUrl;
+        preview.hidden = false;
+        if (photoCamera) photoCamera.value = '';
+        if (photoGallery) photoGallery.value = '';
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function bindPhotoInput(input) {
+      if (!input) return;
+      input.addEventListener('change', function () {
+        var file = input.files && input.files[0];
         if (!file) return;
-        var reader = new FileReader();
-        reader.onload = function () {
-          var dataUrl = reader.result;
-          if (typeof dataUrl === 'string' && dataUrl.length > 2500000) {
-            alert('Image trop lourde pour le stockage local (quota ~5 Mo). Choisis une image plus petite.');
-            return;
-          }
-          userPickedNewPhoto = true;
-          newPhotoFromFile = dataUrl;
-          preview.src = dataUrl;
-          preview.hidden = false;
-        };
-        reader.readAsDataURL(file);
+        loadFileToPreview(file);
+      });
+    }
+    bindPhotoInput(photoCamera);
+    bindPhotoInput(photoGallery);
+
+    if (btnCamera && photoCamera) {
+      btnCamera.addEventListener('click', function () {
+        photoCamera.click();
+      });
+    }
+    if (btnGallery && photoGallery) {
+      btnGallery.addEventListener('click', function () {
+        photoGallery.click();
       });
     }
 

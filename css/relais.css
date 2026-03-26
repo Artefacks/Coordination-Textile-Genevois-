@@ -655,6 +655,43 @@ body.rt-has-tabbar main {
   padding-bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px));
 }
 
+/* Choix photo : appareil (téléphone) ou galerie */
+.rt-photo-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: stretch;
+  margin-top: 0.35rem;
+}
+
+.rt-photo-actions .rt-photo-btn {
+  flex: 1 1 calc(50% - 0.25rem);
+  min-height: var(--rt-touch);
+  padding: 0.5rem 0.65rem;
+  font: inherit;
+  font-weight: 600;
+  text-align: center;
+  color: var(--rt-primary-dark);
+  background: var(--rt-elevated);
+  border: 1px solid var(--rt-border);
+  border-radius: var(--rt-radius-sm);
+  cursor: pointer;
+  box-shadow: var(--rt-shadow);
+}
+
+.rt-photo-actions .rt-photo-btn:hover,
+.rt-photo-actions .rt-photo-btn:focus-visible {
+  background: var(--rt-primary-soft);
+  outline: none;
+}
+
+.rt-photo-hint {
+  font-size: 0.8125rem;
+  color: var(--rt-muted);
+  margin: 0.35rem 0 0;
+  line-height: 1.4;
+}
+
 /* Téléphone réel */
 @media (max-width: 420px) {
   html {

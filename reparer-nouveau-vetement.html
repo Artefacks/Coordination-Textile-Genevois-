@@ -22,15 +22,31 @@
         <input id="nom" name="nom" type="text" placeholder="ex. Veste en laine, jean brut…">
       </p>
       <p>
-        <label for="photo-zone">Photo de la zone à réparer</label>
-        <input id="photo-zone" name="photo-zone" type="file" accept="image/*" capture="environment">
+        <span id="rep-photo-label">Photo de la zone à réparer</span>
       </p>
+      <input id="rep-photo-camera" name="photo-zone" type="file" accept="image/*" capture="environment" hidden>
+      <input id="rep-photo-gallery" name="photo_zone_gallery" type="file" accept="image/*" hidden>
+      <div class="rt-photo-actions" role="group" aria-labelledby="rep-photo-label">
+        <button type="button" class="rt-photo-btn" id="btn-rep-photo-camera">📷 Prendre une photo</button>
+        <button type="button" class="rt-photo-btn" id="btn-rep-photo-gallery">Galerie</button>
+      </div>
+      <p class="rt-photo-hint">Sur téléphone : <strong>Prendre une photo</strong> ouvre l’appareil photo ; <strong>Galerie</strong> choisit une image enregistrée.</p>
       <p>
         <button type="submit" formaction="reparer-analyse-ia.html">Continuer — envoi à l’IA</button>
         <a href="reparer-depuis-garde-robe.html">Plutôt choisir depuis la garde-robe</a>
       </p>
     </form>
   </main>
+  <script>
+    (function () {
+      var cam = document.getElementById('rep-photo-camera');
+      var gal = document.getElementById('rep-photo-gallery');
+      var b1 = document.getElementById('btn-rep-photo-camera');
+      var b2 = document.getElementById('btn-rep-photo-gallery');
+      if (b1 && cam) b1.addEventListener('click', function () { cam.click(); });
+      if (b2 && gal) b2.addEventListener('click', function () { gal.click(); });
+    })();
+  </script>
   <nav class="rt-tabbar" aria-label="Raccourcis">
     <a href="garde-robe.html" class="rt-tabbar__item"><span class="rt-tabbar__icon" aria-hidden="true">👔</span><span class="rt-tabbar__label">Garde-robe</span></a>
     <a href="reparer.html" class="rt-tabbar__item"><span class="rt-tabbar__icon" aria-hidden="true">🧵</span><span class="rt-tabbar__label">Réparer</span></a>
