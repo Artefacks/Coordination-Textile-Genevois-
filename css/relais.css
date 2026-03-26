@@ -197,7 +197,7 @@ section article:last-child {
   padding-bottom: 0.25rem;
 }
 
-/* Listes liens (carte, hub) */
+/* Listes liens (carte, home) */
 main > ul {
   list-style: none;
   margin: 0 0 1rem;
@@ -822,14 +822,14 @@ a.rt-cta-start:focus-visible {
   outline-offset: 2px;
 }
 
-/* Hub — action principale */
-.rt-hub-primary {
+/* Home — action principale */
+.rt-home-primary {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
 
-a.rt-btn-hub-primary {
+a.rt-btn-home-primary {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -845,11 +845,43 @@ a.rt-btn-hub-primary {
   border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
-a.rt-btn-hub-primary:hover,
-a.rt-btn-hub-primary:focus-visible {
+a.rt-btn-home-primary:hover,
+a.rt-btn-home-primary:focus-visible {
   filter: brightness(1.05);
   outline: 2px solid var(--rt-primary);
   outline-offset: 2px;
+}
+
+/* Donner — étapes numérotées (prototype) */
+.rt-don-phase__strip {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.35rem;
+}
+
+.rt-don-phase__num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.65rem;
+  height: 1.65rem;
+  padding: 0 0.35rem;
+  border-radius: 999px;
+  background: var(--rt-primary-soft);
+  color: var(--rt-primary-dark);
+  font-weight: 700;
+  font-size: 0.75rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.rt-don-phase__kicker {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--rt-muted);
 }
 
 /* Téléphone réel */
