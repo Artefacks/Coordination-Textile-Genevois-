@@ -1,19 +1,22 @@
 /**
- * Relais Textile — ouverture caméra pour « Prendre une photo »
- * 1) getUserMedia (aperçu vidéo + Capturer) si disponible (HTTPS / localhost)
- * 2) sinon clic sur l’input file avec capture="environment"
+ * Relais Textile — « Prendre une photo » : active la caméra (getUserMedia) ou
+ * repli sur &lt;input type="file" capture&gt; si indisponible.
  */
 (function () {
   function fileFromCanvas(canvas, type) {
     type = type || 'image/jpeg';
     return new Promise(function (resolve) {
-      canvas.toBlob(function (blob) {
-        if (!blob) {
-          resolve(null);
-          return;
-        }
-        resolve(new File([blob], 'photo.jpg', { type: type }));
-      }, type, 0.88);
+      canvas.toBlob(
+        function (blob) {
+          if (!blob) {
+            resolve(null);
+            return;
+          }
+          resolve(new File([blob], 'photo.jpg', { type: type }));
+        },
+        type,
+        0.88
+      );
     });
   }
 
@@ -23,15 +26,21 @@
       var dt = new DataTransfer();
       dt.items.add(file);
       input.files = dt.files;
-      input.dispatchEvent(new Event('change', { bubbles: true }));
     } catch (e) {
-      console.warn('rt-camera: assignFileToInput', e);
+      console.warn('rt-camera: DataTransfer indisponible', e);
     }
+    /* Toujours notifier en file direct : certains navigateurs ne déclenchent pas change après assignation */
+    input.dispatchEvent(
+      new CustomEvent('rt-file', {
+        bubbles: true,
+        detail: { file: file, inputId: input.id },
+      })
+    );
   }
 
-  function openCameraOverlay(onCapture, onCancel) {
+  function openCameraOverlay(onCapture, onStreamFailed) {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-      onCancel();
+      onStreamFailed();
       return;
     }
     var stream;
@@ -75,10 +84,7 @@
       if (wrap.parentNode) wrap.parentNode.removeChild(wrap);
     }
 
-    btnClose.addEventListener('click', function () {
-      cleanup();
-      onCancel();
-    });
+    btnClose.addEventListener('click', cleanup);
 
     btnCap.addEventListener('click', function () {
       var w = video.videoWidth;
@@ -93,7 +99,6 @@
       fileFromCanvas(c).then(function (file) {
         cleanup();
         if (file) onCapture(file);
-        else onCancel();
       });
     });
 
@@ -113,7 +118,7 @@
         document.body.appendChild(wrap);
       })
       .catch(function () {
-        onCancel();
+        onStreamFailed();
       });
   }
 
@@ -121,20 +126,25 @@
     if (!btn || !input) return;
     btn.addEventListener('click', function (e) {
       e.preventDefault();
-      var used = false;
       openCameraOverlay(
         function (file) {
-          used = true;
           assignFileToInput(input, file);
         },
         function () {
-          if (!used) {
-            input.setAttribute('capture', 'environment');
-            if (!input.getAttribute('accept')) input.setAttribute('accept', 'image/*');
-            input.click();
-          }
+          input.setAttribute('capture', 'environment');
+          if (!input.getAttribute('accept')) input.setAttribute('accept', 'image/*');
+          input.click();
         }
       );
+    });
+  }
+
+  function bindGalleryButton(btn, input) {
+    if (!btn || !input) return;
+    btn.addEventListener('click', function (e) {
+      e.preventDefault();
+      input.removeAttribute('capture');
+      input.click();
     });
   }
 
@@ -144,6 +154,12 @@
       if (!id) return;
       var input = document.getElementById(id);
       bindCameraButton(btn, input);
+    });
+    document.querySelectorAll('[data-rt-gallery-for]').forEach(function (btn) {
+      var id = btn.getAttribute('data-rt-gallery-for');
+      if (!id) return;
+      var input = document.getElementById(id);
+      bindGalleryButton(btn, input);
     });
   });
 })();

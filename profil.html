@@ -42,10 +42,14 @@
       <form action="#" method="get">
         <fieldset>
           <legend>Photo de profil</legend>
-          <p>
-            <label for="avatar">Image</label>
-            <input id="avatar" name="avatar" type="file" accept="image/*">
-          </p>
+          <p><span id="profil-photo-label">Image</span></p>
+          <input id="avatar-camera" name="avatar" type="file" accept="image/*" capture="environment" hidden>
+          <input id="avatar-gallery" name="avatar_gallery" type="file" accept="image/*" hidden>
+          <div class="rt-photo-actions" role="group" aria-labelledby="profil-photo-label">
+            <button type="button" class="rt-photo-btn" data-rt-camera-for="avatar-camera">📷 Prendre une photo</button>
+            <button type="button" class="rt-photo-btn" data-rt-gallery-for="avatar-gallery">Galerie</button>
+          </div>
+          <p class="rt-photo-hint"><strong>Prendre une photo</strong> active la caméra ; <strong>Galerie</strong> choisit une image enregistrée.</p>
         </fieldset>
         <fieldset>
           <legend>Adresse</legend>
@@ -77,6 +81,7 @@
       </form>
     </section>
   </main>
+  <script defer src="js/rt-camera.js"></script>
   <nav class="rt-tabbar" aria-label="Raccourcis">
     <a href="garde-robe.html" class="rt-tabbar__item"><span class="rt-tabbar__icon" aria-hidden="true">👔</span><span class="rt-tabbar__label">Garde-robe</span></a>
     <a href="reparer.html" class="rt-tabbar__item"><span class="rt-tabbar__icon" aria-hidden="true">🧵</span><span class="rt-tabbar__label">Réparer</span></a>

@@ -258,8 +258,6 @@
     var form = document.getElementById('garment-form');
     var photoCamera = document.getElementById('photo-camera');
     var photoGallery = document.getElementById('photo-gallery');
-    var btnCamera = document.getElementById('btn-photo-camera');
-    var btnGallery = document.getElementById('btn-photo-gallery');
     var preview = document.getElementById('photo-preview');
     var editId = getParam('edit');
 
@@ -268,6 +266,61 @@
     /** null tant qu’aucune nouvelle image n’est choisie ; chaîne base64 après choix */
     var newPhotoFromFile = null;
     var userPickedNewPhoto = false;
+
+    var cutoutPreview = document.getElementById('photo-cutout-preview');
+    var cutoutSection = document.getElementById('photo-cutout-section');
+    var btnRelaunchCutout = document.getElementById('btn-relaunch-cutout');
+
+    function applyCutoutPreview(dataUrl) {
+      if (!dataUrl) return;
+      if (cutoutPreview) {
+        cutoutPreview.src = dataUrl;
+        cutoutPreview.hidden = false;
+      }
+      if (cutoutSection) cutoutSection.hidden = false;
+    }
+
+    function loadFileToPreview(file) {
+      if (!file || !preview) return;
+      var reader = new FileReader();
+      reader.onload = function () {
+        var dataUrl = reader.result;
+        if (typeof dataUrl === 'string' && dataUrl.length > 2500000) {
+          alert('Image trop lourde pour le stockage local (quota ~5 Mo). Choisis une image plus petite.');
+          return;
+        }
+        userPickedNewPhoto = true;
+        newPhotoFromFile = dataUrl;
+        preview.src = dataUrl;
+        preview.hidden = false;
+        applyCutoutPreview(dataUrl);
+        if (photoCamera) photoCamera.value = '';
+        if (photoGallery) photoGallery.value = '';
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function bindPhotoInput(input) {
+      if (!input) return;
+      input.addEventListener('change', function () {
+        var file = input.files && input.files[0];
+        if (!file) return;
+        loadFileToPreview(file);
+      });
+      input.addEventListener('rt-file', function (e) {
+        if (e.detail && e.detail.file) loadFileToPreview(e.detail.file);
+      });
+    }
+    bindPhotoInput(photoCamera);
+    bindPhotoInput(photoGallery);
+
+    if (btnRelaunchCutout) {
+      btnRelaunchCutout.addEventListener('click', function () {
+        var src = newPhotoFromFile || (preview && preview.src) || '';
+        if (src && src.indexOf('data:') === 0) applyCutoutPreview(src);
+        else alert('Choisis ou prends une photo à l’étape 1 d’abord.');
+      });
+    }
 
     if (editId) {
       var existing = WS.getGarment(state, editId);
@@ -284,49 +337,9 @@
         if (existing.photoDataUrl && preview) {
           preview.src = existing.photoDataUrl;
           preview.hidden = false;
+          applyCutoutPreview(existing.photoDataUrl);
         }
       }
-    }
-
-    function loadFileToPreview(file) {
-      if (!file || !preview) return;
-      var reader = new FileReader();
-      reader.onload = function () {
-        var dataUrl = reader.result;
-        if (typeof dataUrl === 'string' && dataUrl.length > 2500000) {
-          alert('Image trop lourde pour le stockage local (quota ~5 Mo). Choisis une image plus petite.');
-          return;
-        }
-        userPickedNewPhoto = true;
-        newPhotoFromFile = dataUrl;
-        preview.src = dataUrl;
-        preview.hidden = false;
-        if (photoCamera) photoCamera.value = '';
-        if (photoGallery) photoGallery.value = '';
-      };
-      reader.readAsDataURL(file);
-    }
-
-    function bindPhotoInput(input) {
-      if (!input) return;
-      input.addEventListener('change', function () {
-        var file = input.files && input.files[0];
-        if (!file) return;
-        loadFileToPreview(file);
-      });
-    }
-    bindPhotoInput(photoCamera);
-    bindPhotoInput(photoGallery);
-
-    if (btnCamera && photoCamera) {
-      btnCamera.addEventListener('click', function () {
-        photoCamera.click();
-      });
-    }
-    if (btnGallery && photoGallery) {
-      btnGallery.addEventListener('click', function () {
-        photoGallery.click();
-      });
     }
 
     form.addEventListener('submit', function (e) {

@@ -41,10 +41,10 @@
         <input id="photo-camera" name="photo-camera" type="file" accept="image/*" capture="environment" hidden aria-hidden="true" tabindex="-1">
         <input id="photo-gallery" name="photo-gallery" type="file" accept="image/*" hidden aria-hidden="true" tabindex="-1">
         <div class="rt-photo-actions" role="group" aria-labelledby="photo-label">
-          <button type="button" class="rt-photo-btn" id="btn-photo-camera">📷 Prendre une photo</button>
-          <button type="button" class="rt-photo-btn" id="btn-photo-gallery">Galerie</button>
+          <button type="button" class="rt-photo-btn" id="btn-photo-camera" data-rt-camera-for="photo-camera">📷 Prendre une photo</button>
+          <button type="button" class="rt-photo-btn" id="btn-photo-gallery" data-rt-gallery-for="photo-gallery">Galerie</button>
         </div>
-        <p class="rt-photo-hint">Sur téléphone : <strong>Prendre une photo</strong> ouvre l’appareil photo ; <strong>Galerie</strong> permet de choisir une image déjà enregistrée.</p>
+        <p class="rt-photo-hint"><strong>Prendre une photo</strong> active la caméra (aperçu puis capture). Sinon <strong>Galerie</strong> pour une image déjà enregistrée. En HTTPS ou sur téléphone, la caméra s’ouvre directement ; sinon le sélecteur système est proposé.</p>
         <p>
           <img id="photo-preview" alt="Aperçu du vêtement" width="200" hidden>
         </p>
@@ -95,6 +95,7 @@
       </p>
     </form>
   </main>
+  <script defer src="js/rt-camera.js"></script>
   <script defer src="js/wardrobe-store.js"></script>
   <script defer src="js/wardrobe-pages.js"></script>
   <nav class="rt-tabbar" aria-label="Raccourcis">
