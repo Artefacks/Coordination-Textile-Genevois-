@@ -835,6 +835,69 @@ dialog.rt-modal-avatar::backdrop {
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
 }
 
+/* Sac à don — liste + boutons retirer / ajouter */
+#donation-bag-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+.rt-don-sac-item {
+  margin: 0;
+}
+.rt-don-sac-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  align-items: flex-start;
+  padding: 0.65rem 0.75rem;
+  background: var(--rt-elevated);
+  border: 1px solid var(--rt-border);
+  border-radius: var(--rt-radius-sm);
+  box-shadow: var(--rt-shadow);
+}
+.rt-don-sac-meta {
+  flex: 1;
+  min-width: min(100%, 12rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: flex-start;
+}
+button.rt-btn-don-sac-remove,
+button.rt-btn-don-sac-add {
+  min-height: var(--rt-touch);
+  padding: 0.45rem 0.85rem;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: var(--rt-radius-sm);
+  border: 1px solid var(--rt-border);
+  box-shadow: var(--rt-shadow);
+}
+button.rt-btn-don-sac-remove {
+  background: var(--rt-surface);
+  color: var(--rt-primary-dark);
+  width: 100%;
+  max-width: 16rem;
+}
+button.rt-btn-don-sac-remove:hover,
+button.rt-btn-don-sac-remove:focus-visible {
+  background: var(--rt-primary-soft);
+  outline: none;
+}
+button.rt-btn-don-sac-add {
+  background: var(--rt-elevated);
+  color: var(--rt-text);
+}
+button.rt-btn-don-sac-add:hover,
+button.rt-btn-don-sac-add:focus-visible {
+  background: var(--rt-primary-soft);
+  outline: none;
+}
+
 /* Mini-carte Leaflet — boîtes à fringues (ex. Genève / Carouge) */
 .rt-mini-map-wrap {
   margin: 0.75rem 0 1rem;

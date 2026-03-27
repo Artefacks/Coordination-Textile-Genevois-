@@ -204,6 +204,7 @@
             actions.appendChild(document.createTextNode(' — '));
             var rmSac = document.createElement('button');
             rmSac.type = 'button';
+            rmSac.className = 'rt-btn-don-sac-remove';
             rmSac.textContent = 'Retirer du sac';
             rmSac.setAttribute('aria-label', 'Retirer du sac : ' + (g.name || ''));
             rmSac.addEventListener('click', function () {
@@ -215,6 +216,7 @@
           } else {
             var addSac = document.createElement('button');
             addSac.type = 'button';
+            addSac.className = 'rt-btn-don-sac-add';
             addSac.textContent = 'Ajouter au sac';
             addSac.setAttribute('aria-label', 'Ajouter au sac à don : ' + (g.name || ''));
             addSac.addEventListener('click', function () {
@@ -673,13 +675,12 @@
       }
       items.forEach(function (g) {
         var li = document.createElement('li');
+        li.className = 'rt-don-sac-item';
         var row = document.createElement('div');
-        row.style.display = 'flex';
-        row.style.gap = '0.65rem';
-        row.style.alignItems = 'flex-start';
+        row.className = 'rt-don-sac-row';
         row.appendChild(createGarmentThumb(g, 48));
         var col = document.createElement('div');
-        col.style.flex = '1';
+        col.className = 'rt-don-sac-meta';
         var strong = document.createElement('strong');
         strong.textContent = g.name || 'Sans nom';
         col.appendChild(strong);
@@ -687,9 +688,9 @@
         var small = document.createElement('small');
         small.textContent = catLabel(g.category);
         col.appendChild(small);
-        var p = document.createElement('p');
         var rm = document.createElement('button');
         rm.type = 'button';
+        rm.className = 'rt-btn-don-sac-remove';
         rm.textContent = 'Retirer du sac';
         rm.setAttribute('aria-label', 'Retirer du sac : ' + (g.name || ''));
         rm.addEventListener('click', function () {
@@ -697,8 +698,7 @@
           WS.saveState(state);
           render();
         });
-        p.appendChild(rm);
-        col.appendChild(p);
+        col.appendChild(rm);
         row.appendChild(col);
         li.appendChild(row);
         listEl.appendChild(li);
@@ -787,6 +787,7 @@
           actions.appendChild(document.createTextNode(' — '));
           var rm = document.createElement('button');
           rm.type = 'button';
+          rm.className = 'rt-btn-don-sac-remove';
           rm.textContent = 'Retirer du sac';
           rm.setAttribute('aria-label', 'Retirer du sac : ' + (g.name || ''));
           rm.addEventListener('click', function () {
@@ -798,6 +799,7 @@
         } else {
           var add = document.createElement('button');
           add.type = 'button';
+          add.className = 'rt-btn-don-sac-add';
           add.textContent = 'Ajouter au sac';
           add.setAttribute('aria-label', 'Ajouter au sac : ' + (g.name || ''));
           add.addEventListener('click', function () {
