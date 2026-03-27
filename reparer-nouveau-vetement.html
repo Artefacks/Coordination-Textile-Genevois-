@@ -19,7 +19,7 @@
     <form action="#" method="get">
       <p>
         <label for="nom">Nom / type</label>
-        <input id="nom" name="nom" type="text" placeholder="ex. Veste en laine, jean brut…">
+        <input id="nom" name="nom" type="text" placeholder="ex. Veste en laine, jean brut…" autocomplete="off">
       </p>
       <p>
         <span id="rep-photo-label">Photo de la zone à réparer</span>
@@ -31,13 +31,21 @@
         <button type="button" class="rt-photo-btn" id="btn-rep-photo-gallery" data-rt-gallery-for="rep-photo-gallery">Galerie</button>
       </div>
       <p class="rt-photo-hint"><strong>Prendre une photo</strong> active la caméra (aperçu puis capture). <strong>Galerie</strong> choisit une image enregistrée.</p>
+      <div id="rep-photo-preview-block" class="rt-repair-preview-wrap" hidden>
+        <p class="rt-page-hint" id="rep-photo-preview-hint">Aperçu — le cadre rouge indique la zone à cibler pour la réparation ; vérifie puis continue.</p>
+        <div class="rt-repair-preview-stage">
+          <img id="rep-photo-preview-img" alt="" width="800" height="600" decoding="async">
+          <div class="rt-repair-target-ring" aria-hidden="true"></div>
+        </div>
+      </div>
       <p>
-        <button type="submit" formaction="reparer-analyse-ia.html">Continuer — envoi à l’IA</button>
+        <button type="submit" formaction="reparer-analyse-ia.html" id="btn-repair-nouveau-continue" disabled>Continuer — envoi à l’IA</button>
         <a href="reparer-depuis-garde-robe.html">Plutôt choisir depuis la garde-robe</a>
       </p>
     </form>
   </main>
   <script defer src="js/rt-camera.js"></script>
+  <script defer src="js/rt-repair-photo-preview.js"></script>
   <nav class="rt-tabbar" aria-label="Raccourcis">
     <a href="garde-robe.html" class="rt-tabbar__item"><span class="rt-tabbar__icon" aria-hidden="true">👔</span><span class="rt-tabbar__label">Garde-robe</span></a>
     <a href="reparer.html" class="rt-tabbar__item"><span class="rt-tabbar__icon" aria-hidden="true">🧵</span><span class="rt-tabbar__label">Réparer</span></a>

@@ -605,8 +605,60 @@
     render();
   }
 
+  /**
+   * Parcours « nouveau vêtement » : sessionStorage (photo découpage) → création vêtement + sac à don.
+   * Appelé depuis donner.html?commitDonNouveau=1 (lien après analyse de donabilité).
+   */
+  function tryCommitDonNouveauSession() {
+    var photo = null;
+    var nom = '';
+    try {
+      photo = sessionStorage.getItem(STORAGE_DON_PHOTO);
+      nom = sessionStorage.getItem(STORAGE_DON_NOM) || '';
+    } catch (e) {
+      return false;
+    }
+    if (!photo || photo.indexOf('data:') !== 0) return false;
+
+    var state = WS.loadState();
+    var g = WS.addGarment(state, {
+      name: nom.trim() || 'Sans nom',
+      category: 'haut',
+      etat: '',
+      taches: '',
+      commentaire: '',
+      donnable: 'oui',
+      photoDataUrl: photo,
+    });
+    WS.addToDonationBag(state, g.id);
+    WS.saveState(state);
+    try {
+      sessionStorage.removeItem(STORAGE_DON_NOM);
+      sessionStorage.removeItem(STORAGE_DON_PHOTO);
+      sessionStorage.removeItem(STORAGE_DON_ORIGINAL);
+    } catch (err) {
+      /* ignore */
+    }
+    return true;
+  }
+
   function initDonationBag() {
     maybeSeed();
+    if (getParam('commitDonNouveau') === '1') {
+      tryCommitDonNouveauSession();
+      try {
+        var u = new URL(window.location.href);
+        u.searchParams.delete('commitDonNouveau');
+        u.hash = 'sac-don';
+        window.history.replaceState(null, '', u.pathname + u.search + u.hash);
+      } catch (e) {
+        try {
+          window.history.replaceState(null, '', 'donner.html#sac-don');
+        } catch (e2) {
+          /* ignore */
+        }
+      }
+    }
     var state = WS.loadState();
     var listEl = document.getElementById('donation-bag-list');
     var emptyEl = document.getElementById('donation-bag-empty');
@@ -654,6 +706,31 @@
     }
 
     render();
+
+    var btnQr = document.getElementById('btn-scan-qr');
+    var dlgQr = document.getElementById('don-qr-dialog');
+    var panelEmpty = document.getElementById('don-qr-panel-empty');
+    var panelScan = document.getElementById('don-qr-panel-scan');
+    var btnQrClose = document.getElementById('don-qr-close');
+    var btnQrSim = document.getElementById('don-qr-simulate');
+    if (btnQr && dlgQr && dlgQr.showModal) {
+      btnQr.addEventListener('click', function () {
+        var n = WS.getDonationBagGarments(state).length;
+        if (panelEmpty) panelEmpty.hidden = n > 0;
+        if (panelScan) panelScan.hidden = n === 0;
+        dlgQr.showModal();
+      });
+    }
+    if (btnQrClose && dlgQr) {
+      btnQrClose.addEventListener('click', function () {
+        dlgQr.close();
+      });
+    }
+    if (btnQrSim) {
+      btnQrSim.addEventListener('click', function () {
+        window.location.href = 'donner-valide-localisation.html';
+      });
+    }
   }
 
   function initDonationPick() {

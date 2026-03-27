@@ -51,11 +51,31 @@
       <h2 id="qr-boite">Valider le don</h2>
       <p class="rt-page-hint">Quand ton sac est prêt : dépose-le dans une boîte à fringues et scanne le QR sur la boîte pour confirmer.</p>
       <p>
-        <button type="button">Scanner le QR</button>
+        <button type="button" id="btn-scan-qr">Scanner le QR</button>
       </p>
       <p><a href="donner-valide-localisation.html">Points de dépôt</a></p>
     </section>
   </main>
+  <dialog id="don-qr-dialog" class="rt-modal-avatar rt-modal-don-qr" aria-labelledby="don-qr-title">
+    <div class="rt-modal-avatar__body">
+      <h2 id="don-qr-title">Scanner le QR</h2>
+      <div id="don-qr-panel-empty" hidden>
+        <p class="rt-page-hint">Ton sac est vide. Ajoute au moins une pièce avant de scanner le QR sur la boîte à fringues.</p>
+        <p>
+          <a href="donner-nouveau-vetement.html">Nouveau vêtement (photo)</a>
+          — <a href="donner-depuis-garde-robe.html">Depuis la garde-robe</a>
+        </p>
+      </div>
+      <div id="don-qr-panel-scan" hidden>
+        <p class="rt-page-hint">Démo : en production, la caméra lirait le code sur la boîte. Ici tu peux simuler une lecture réussie.</p>
+        <div class="rt-qr-fake" aria-hidden="true"></div>
+        <p>
+          <button type="button" class="rt-btn-don-qr-sim" id="don-qr-simulate">Simuler un scan réussi</button>
+        </p>
+      </div>
+      <p><button type="button" class="rt-modal-avatar__close" id="don-qr-close">Fermer</button></p>
+    </div>
+  </dialog>
   <script defer src="js/wardrobe-store.js"></script>
   <script defer src="js/wardrobe-pages.js"></script>
   <nav class="rt-tabbar" aria-label="Raccourcis">
